@@ -30,9 +30,7 @@ PYCHARM_DEBUG=True
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
 # vorher Leer
-ALLOWED_HOSTS = ['192.168.0.94', #für das Handy zum Erreichen
-                 '127.0.0.1',
-                 '192.168.178.57'] # vom Surface für das normale Laufen
+ALLOWED_HOSTS = ['*'] # vom Surface für das normale Laufen
 
 
 # Application definition
