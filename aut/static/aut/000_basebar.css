@@ -1,0 +1,137 @@
+html {
+  font-size: calc(0.2rem + 1vw);
+}
+body {
+  position:relative;
+  height: auto;
+  width: auto;
+  text-align:left;
+}
+
+.textdisplay {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 900;
+  color:black;
+  text-align:center;
+}
+
+.logout {
+left: 20rem;
+}
+
+.heading_1 {
+  font-weight: bolder;
+  font-size:2rem;
+  text-align:left;
+}
+
+#statusleiste {
+  position:relative;
+  width:auto;
+  height:4rem;
+  z-index: 10;
+  border: 1px solid #28ffff;
+  background-color: #e6ffff;
+}
+
+#willkommen {
+  position: relative;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+font-weight: 700;
+  float: left;
+  display: inline-block;
+}
+
+#logo {
+  position: relative;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  float: right;
+  width: 4rem;
+  height: 3rem;
+  right: 1rem;
+}
+
+
+/* für die anderen Elemente in der Mitte */
+.dropdown {
+  margin-left: 1rem;
+  margin-bottom: 0;
+  padding-bottom: 0;
+  position: relative;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  display: inline-block;
+  font-size: 0;
+}
+
+.dropdown-content {
+  position: relative;
+  display: inline-block;
+  background-color: #22c8ff;
+  transition: background 0.3s;
+}
+
+/* kleiner Trick mit der FOnt Size um die komische Sache wegzunekommen */
+.dropdown-content a {
+  font-size: calc(0.2rem + 1vw);
+  text-decoration: none;
+  padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+  display: inline-block;
+  transition: background-color 0.5s;
+}
+
+/* wenn man drüber hovered */
+.dropdown-content a:hover {
+    background-color: #0099ff;
+    color: white;
+}
+.dropdown-content a:active {
+    background-color: #348F9A;
+    color: black;
+}
+.dropdown-content a:link, .dropdown-content a:visited, {
+  color:black;
+}
+
+
+
+/* Mal gucken ob man das noch braucht */
+/* Das Erste Element wird trotzdem angezeigt mit first child*/
+@media screen and (max-width: 40rem) {
+
+  .dropdown-content a:not(:first-child){
+    display: none;
+  }
+
+  .dropdown-content a{
+
+  clear: both;
+  float: left;
+
+  }
+     .dropdown{
+    position: absolute;
+    height: auto;
+    width:auto;
+  border-style: none;
+  border-width: 0;
+  border-color: none;
+  }
+   .dropdown-content{
+    position: absolute;
+    top: -1rem;
+  border-style: solid;
+  border-width: 0.1rem;
+  border-color: green;
+  }
+
+  .dropdown:hover .dropdown-content a {
+  display: inline-block;
+  float: left;}
+}
+

@@ -1,0 +1,137 @@
+html {
+  font-size: calc(0.2rem + 1vw);
+}
+body {
+  position:relative;
+  height: auto;
+  width: auto;
+  text-align:left;
+
+}
+
+/* Die Rows und Columns für den Rest */
+/* Create three equal columns that floats next to each other */
+#tabellen{
+  margin-top: 1rem;
+  position:relative;
+  width:auto;
+  height: auto;
+  overflow: auto;
+
+}
+/* Create three equal columns that floats next to each other */
+.column {
+  float: left;
+  width: 33.33%;
+  background-color: white;
+  text-align: center;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+
+
+#req_table {
+  background-color: #FE877C;
+  margin: auto;
+  padding: 0.5rem;
+  width: 100%;
+}
+
+#req_table td, th {
+  text-align: center;
+  padding: 1rem 1rem 1rem 1rem; /* t r b l*/
+border: solid;
+border-color: black;
+}
+
+#testc_table {
+  background-color: #D4E88B;
+  margin: auto;
+  padding: 0.5rem;
+  width: 100%;
+}
+
+#testc_table td, th {
+  text-align: center;
+  padding: 1rem 1rem 1rem 1rem; /* t r b l*/
+border: solid;
+border-color: black;
+}
+#testr_table {
+  background-color: #58A7C6;
+  margin: auto;
+  padding: 0.5rem;
+  width: 100%;
+}
+
+#testr_table td, th {
+  text-align: center;
+  padding: 1rem 1rem 1rem 1rem; /* t r b l*/
+border: solid;
+border-color: black;
+}
+
+#knoepfe_id{
+  margin-top: 3rem;
+  position: relative;
+  width:auto;
+  height: auto;
+  border-width:0.1rem;
+  border-style:solid;
+  border-color:red;
+  overflow: auto;
+}
+
+.knoepfe {
+  background-color: #668cff;
+  margin: auto;
+  border: 0.1rem solid red;
+  padding: 0.5rem;
+  width: 50%;
+  height: 50%;
+  padding: 0.1rem;
+
+}
+/* Create three equal columns that floats next to each other */
+.columnk {
+  float: left;
+  width: 33.33%;
+  text-align: center;
+}
+
+/* Clear floats after the columns */
+.rowk:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+
+
+.knoepfe_innen {
+  background-color: #668cff;
+  margin: auto;
+  border: 0.1rem solid red;
+  padding: 0.5rem;
+  width: 50%;
+  height: 50%;
+  padding: 0.1rem;
+
+}
+
+#gruppe {
+font-family: 'Source Sans Pro', sans-serif;
+margin-top: 1rem;
+text-align: center;
+display: block;
+        padding: 0.2rem;
+        color: black;
+        background-color:#0099ff;
+
+}

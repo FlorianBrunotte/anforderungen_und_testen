@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    {% load static %}
+    <script type="text/javascript" src="{{ STATIC_URL }} /static/jquery-3.5.1.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@600&display=swap" rel="stylesheet">
+</head>
+<style type="text/css">
+html {
+  font-size: calc(0.2rem + 1vw);
+}
+table, th, td {
+  border: 1px solid black;
+}
+th{
+  width: 25rem;
+}
+table{
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+.column2 {
+  float: left;
+  width: 100%;
+  background-color: white;
+  text-align: center;
+
+}
+.column22 {
+  float: left;
+  width: 55%;
+  background-color: white;
+  text-align: center;
+  margin-left: 1rem;
+  width: auto;
+
+}
+
+textarea{
+width: 100%;
+height: 100%;
+}
+.noch {
+    position: relative;
+    display: block;
+    text-align: right;
+  }
+
+.buttons{
+height: 2rem;
+background-color: white;
+color: black;
+border: solid 1px black;
+text-decoration: none;
+}
+
+.buttons:hover{
+    background-color: black;
+    color: white;
+}
+</style>
+<body>
+
+<div class="column2">
+  <h1>{{ testc_instance }}</h1>
+    <table>
+     <tr>
+         <td><input class="buttons" form="searchForm" id="sub1" type="submit" value="Speichern"></td>
+
+
+<form action="{% url 'aut:testcase_create' pk=testc_instance.testc_pk_testcaseid  %}" method="post">
+  {% csrf_token %}
+  <td><input class="buttons" name="delete_testcase" type="submit" value="Löschen"></td>
+</form>
+
+     </tr>
+
+ </table>
+    <p>Erstellung: {{ testc_instance.testc_datum_erstellung }} Änderung: {{ testc_instance.testc_datum_aenderung }} Ersteller: {{ testc_instance.testc_fk_ersteller }}</p>
+
+
+ <form action="{% url 'aut:testcase_create' pk=testc_instance.testc_pk_testcaseid  %}" id="searchForm" method="post">
+ <table style="width:100%;">
+     {% csrf_token %}
+     <tr>
+         <td><label for="{{ form.testc_form_name.id_for_label }}">Name</label></td>
+         <td>{{ form.testc_form_name }}
+         <span id="chars1" class="noch"></span></td>
+     </tr>
+     <tr>
+         <td><label for="{{ form.testc_form_beschreibung.id_for_label }}">Beschreibung</label></td>
+         <td>{{ form.testc_form_beschreibung }}
+         <span id="chars2" class="noch"></span></td>
+     </tr>
+     <tr>
+         <td><label for="{{ form.testc_form_kommentar.id_for_label }}">Kommentar</label></td>
+         <td>{{ form.testc_form_kommentar }}
+         <span id="chars3" class="noch"></span></td>
+     </tr>
+     <tr>
+         <td><label for="{{ form.testc_form_vorbedingung.id_for_label }}">Vorbedingung</label></td>
+         <td>{{ form.testc_form_vorbedingung }}
+         <span id="chars4" class="noch"></span></td>
+     </tr>
+     <tr>
+         <td> TestSchritte </td>
+         <td>
+
+             <table id="Schritte Tabelle">
+                 <tr>
+			<td>Schritt </td> <td>erwartetes Ergebnis</td> <td></td><td>Löschen?</td>
+		</tr>
+             <form>
+             {{ formset.management_form }}
+
+             {% for form in formset %}
+                 <tr>
+             {% for field in form %}
+             <td>  {{ field }}</td>
+             {% endfor %}
+             </tr>
+             {% endfor %}
+
+            </form>
+      </table>
+             <div id="Schritte_submit">
+             <input type="submit" value="Neue Zeile">
+                </div>
+
+         </td>
+     </tr>
+
+     <tr>
+         <td><label for="{{ form.testc_form_fk_requirement.id_for_label }}">Requirement</label></td>
+         <td>{{ form.testc_form_fk_requirement }}</td>
+     </tr>
+     <tr>
+         <td>TestRuns:</td>
+         <td>
+             {% for testrun in testruns %}
+             <p>
+                 {{testrun}} hat Status {{testrun.get_testr_status_display}} vom {{testrun.testr_datum_aenderung}} überprüft Testcase {{testrun.testr_testc_datum}}
+             </p>
+             {% endfor %}
+
+         </td>
+     </tr>
+
+ </table>
+ </form>
+
+
+
+</div>
+
+
+<script>
+var maxLength = 100;
+$('#chars1').text(' characters remaining');
+$('#chars2').text(' characters remaining');
+$('#chars3').text(' characters remaining');
+$('#chars4').text(' characters remaining');
+$('#id_testc_form_name').keyup(function() {
+  var length = $(this).val().length;
+  var length = maxLength-length;
+  $('#chars1').text(length + ' characters remaining');
+});
+$('#id_testc_form_beschreibung').keyup(function() {
+  var length = $(this).val().length;
+  var length = maxLength-length;
+  $('#chars2').text(length + ' characters remaining');
+});
+$('#id_testc_form_kommentar').keyup(function() {
+  var length = $(this).val().length;
+  var length = maxLength-length;
+  $('#chars3').text(length + ' characters remaining');
+});
+$('#id_testc_form_vorbedingung').keyup(function() {
+  var length = $(this).val().length;
+  var length = maxLength-length;
+  $('#chars4').text(length + ' characters remaining');
+});
+
+</script>
+</body>
+</html>

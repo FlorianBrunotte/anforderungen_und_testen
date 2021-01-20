@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    {% load static %}
+    <script type="text/javascript" src="{{ STATIC_URL }} /static/jquery-3.5.1.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@600&display=swap" rel="stylesheet">
+</head>
+<style type="text/css">
+html {
+  font-size: calc(0.2rem + 1vw);
+}
+table, th, td {
+  border: 1px solid black;
+}
+th{
+  width: 25rem;
+}
+table{
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.column2 {
+  float: left;
+  width: 100%;
+  background-color: white;
+  text-align: center;
+
+}
+.column22 {
+  float: left;
+  width: 55%;
+  background-color: white;
+  text-align: center;
+  margin-left: 1rem;
+  width: auto;
+
+}
+textarea{
+width: 100%;
+height: 100%;
+}
+.noch {
+    position: relative;
+    display: block;
+    text-align: right;
+  }
+.buttons{
+height: 2rem;
+background-color: white;
+color: black;
+border: solid 1px black;
+text-decoration: none;
+}
+
+.buttons:hover{
+    background-color: black;
+    color: white;
+}
+</style>
+
+<body>
+<div class="column2">
+  <h1>{{ testr_instance }}</h1>
+
+         {% if testr_instance.testr_status == 'n' %}
+    <table>
+     <tr>
+
+         <td><input  class="buttons" form="searchForm" id="sub1" type="submit" value="Speichern"></td>
+
+         {% if testr_instance.testr_fk_testcaseid %}
+
+
+            <td><input  class="buttons" form="searchForm" name="save_and_testrun"  id="sub2" type="submit" value="Speichern und TestRun durchführen" onclick="btnClicked = 'Sub2'"></td>
+
+         {% endif %}
+
+
+<form action="{% url 'aut:testrun_create' pk=testr_instance.testr_pk_testrunid  %}" method="post">
+  {% csrf_token %}
+  <td><input class="buttons" name="delete_testrun" type="submit" value="Löschen"></td>
+</form>
+
+     </tr>
+
+ </table>
+
+         {% endif %}
+
+    <p>Erstellung: {{ testr_instance.testr_datum_erstellung }} Änderung: {{ testr_instance.testr_datum_aenderung }} Ersteller: {{ testr_instance.testr_fk_ersteller }}</p>
+
+ <form action="{% url 'aut:testrun_create' pk=testr_instance.testr_pk_testrunid  %}" id="searchForm" method="post">
+  <table style="width:100%;">
+     {% csrf_token %}
+     {% if testr_instance.testr_status == 'n' %}
+     <tr>
+         <td><label for="{{ form.testr_form_name.id_for_label }}">Name</label></td>
+         <td>{{ form.testr_form_name }}
+         <span id="chars1" class="noch"></span></td>
+     </tr>
+     <tr>
+         <td><label for="{{ form.testr_form_beschreibung.id_for_label }}">Beschreibung</label></td>
+         <td>{{ form.testr_form_beschreibung }}
+         <span id="chars2" class="noch"></span></td>
+     </tr>
+     <tr>
+         <td><label for="{{ form.testr_form_kommentar.id_for_label }}">Kommentar</label></td>
+         <td>{{ form.testr_form_kommentar }}
+         <span id="chars3" class="noch"></span></td>
+     </tr>
+     <tr>
+         <td><label for="{{ form.testr_form_fk_testcase.id_for_label }}">TestCase</label></td>
+         <td>{{ form.testr_form_fk_testcase }}</td>
+     </tr>
+
+     {% else %}
+     <tr>
+         <td>Name</td>
+         <td>{{ testr_instance.testr_name }}</td>
+     </tr>
+     <tr>
+         <td>Beschreibung</td>
+         <td>{{ testr_instance.testr_beschreibung }}</td>
+     </tr>
+     <tr>
+         <td>Kommentar</td>
+         <td>{{ testr_instance.testr_kommentar }}</td>
+     </tr>
+     <tr>
+         <td>Status</td>
+         <td>{{ testr_instance.testr_status }}</td>
+     </tr>
+     <tr>
+         <td>Dauer</td>
+         <td>{{ testr_instance.testr_dauer }}</td>
+     </tr>
+     <tr>
+         <td>TestCase</td>
+         <td>{{ testr_instance.testr_fk_testcaseid }}</td>
+     </tr>
+     <tr>
+         <td>Schritte</td>
+         <td>
+         <table>
+
+             <th>Schritte</th>
+             <th>erwartetes Ergebnis</th>
+             <th>Tatsächliches Ergebnis</th>
+             <th>Ergebnis</th>
+
+         {% for schritt in testr_schritte %}
+             <tr>
+                 <td>{{ schritt.schritt_schritte }}</td>
+                 <td>{{ schritt.schritt_erwartetesergebnis }}</td>
+                 <td>{{ schritt.schritt_tatsaechlichesergebnis }}</td>
+                 <td>{{ schritt.schritt_ergebnis }}</td>
+             </tr>
+
+             {% endfor %}
+
+
+         </table>
+         </td>
+
+
+     </tr>
+
+
+
+
+     {% endif %}
+
+
+ </table>
+ </form>
+
+</div>
+
+
+
+<script>
+var maxLength = 100;
+$('#chars1').text(' characters remaining');
+$('#chars2').text(' characters remaining');
+$('#chars3').text(' characters remaining');
+$('#id_testr_form_name').keyup(function() {
+  var length = $(this).val().length;
+  var length = maxLength-length;
+  $('#chars1').text(length + ' characters remaining');
+});
+$('#id_testr_form_beschreibung').keyup(function() {
+  var length = $(this).val().length;
+  var length = maxLength-length;
+  $('#chars2').text(length + ' characters remaining');
+});
+$('#id_testr_form_kommentar').keyup(function() {
+  var length = $(this).val().length;
+  var length = maxLength-length;
+  $('#chars3').text(length + ' characters remaining');
+});
+
+</script>
+
+
+</body>
+</html>

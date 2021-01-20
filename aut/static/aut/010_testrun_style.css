@@ -1,0 +1,60 @@
+#tabellen{
+  margin-top: 1rem;
+  position:relative;
+  width:100%;
+  height: 35rem;
+  overflow: auto;
+}
+
+ul{
+  float: left;
+  list-style:none;
+  padding:0;
+  margin:0;
+  width:20%;
+  overflow:hidden;
+  overflow-y:scroll;
+  height: 100%;
+  /*white-space: nowrap; wenn man die Liste lang machen möchte */
+  /*overflow-x:scroll;*/
+
+}
+li{
+  line-height:2rem;
+}
+
+#ifrm{
+  padding:0;
+  margin:0;
+  border: 0;
+  float: left;
+  width: 80%;
+  height: 100%;
+  background: #58A7C6;
+}
+ul {
+  background: #58A7C6;
+}
+ul li {
+margin: 5px;
+padding: 1px 1px 1px 1px;
+}
+
+ul li a{
+text-decoration: none;}
+
+#testr_a{
+  background-color:white;
+  color: #ff0000;
+  text-align: center;
+  display: block;
+  border: 1px solid #ff6666;
+  border-radius: 20px 20px 20px 20px;
+}
+#testr_a:hover {
+  background-color: red;
+  color:  black;
+}
+#testr_a:link {
+  text-decoration: none;
+}

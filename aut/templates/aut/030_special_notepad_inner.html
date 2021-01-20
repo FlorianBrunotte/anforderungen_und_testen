@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<form name="myForm" id="myForm" method="POST" action="{% url 'aut:notepad' %}">
+    {% csrf_token %}
+    {{ form }}
+</form>
+
+<script type="text/javascript">
+        document.getElementById('id_note_form').onchange = function() {
+            alert("HALLO");
+            document.getElementById('myForm').submit();
+        }
+</script>
+<style>
+#id_note_form{
+height: 360px;
+width: 360px;
+}
+
+
+</style>
+
+
+
+</body>
+</html>

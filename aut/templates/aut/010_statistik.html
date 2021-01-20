@@ -1,0 +1,152 @@
+﻿{% extends "aut/000_base_bar.html" %}
+{% block titel %}
+<title>A&T Dashboard</title>
+{% endblock %}
+
+{% block morecss %}
+{% endblock %}
+
+
+
+{% block content %}
+
+    {% load aut_extras %}
+
+<style type="text/css">
+.select {
+display: none;
+margin-top: 1rem;
+text-align: center;
+
+}
+.select_table{
+ margin-left: auto;
+margin-right: auto;
+margin-top: 1rem;
+text-align: center;
+
+}
+
+</style>
+<style>
+  #stat {
+   background-color: black;
+  color: white;
+}
+  #radiobuttons {
+  margin-top: 1rem;
+  background-color: #0099ff;
+  text-align:center;
+}
+</style>
+
+<div id="radiobuttons">
+<label>
+<input type="radio" name="colorRadio"
+value="TestCase" checked="checked">TestCase</label>
+<label>
+<input type="radio" name="colorRadio"
+value="TestRun">TestRun</label>
+<label>
+<input type="radio" name="colorRadio"
+value="Projekt">Projekt</label>
+</div>
+
+<div class="TestCase select" style="display: block;">
+        <div>
+        <p style="color: red;">Formel von TestCase Coverage: Requirements mit TestCase / Requirements</p>
+        <p style="color: red;">Ergebnis: {{ TestCase_Coverage }} %</p>
+    </div>
+   <table class="select_table" border="solid">
+
+          <tr>
+            <th>Requirements X TestCase</th>
+            {% for testcase in all_testcases %}
+              <th {{ testcase|color_tc }}>{{ testcase.get_id }}</th>
+            {% endfor %}
+          </tr>
+
+     {% for requirement in all_requirements %}
+        <tr>
+              <th {{ requirement|color_req }}>{{ requirement.get_id }}</th>
+           {% for testcase in all_testcases %}
+              <td>
+
+          {% if requirement in testcase.testc_fk_requirement.all %}
+                  <p>X</p>
+           {% endif %}</td>
+
+            {% endfor %}
+        </tr>
+      {% endfor %}
+   </table>
+</div>
+
+<div class="TestRun select">
+        <div>
+        <p style="color: red;">Formel von TestRun Coverage: Requirements mit erfolgreichem TestRun / Requirements</p>
+        <p style="color: red;">Ergebnis: {{ TestRun_Coverage }} %</p>
+        <p>Durschnitt: Min: Max: </p>
+
+    </div>
+   <table class="select_table" border="solid">
+
+          <tr>
+            <th>Requirements X TestCase</th>
+            {% for testcase in all_testcases %}
+              <th>{{ testcase.get_id }}</th>
+            {% endfor %}
+          </tr>
+
+       {% for requirement in all_requirements %}
+        <tr>
+            <th {{ requirement|color_req_run }}>{{ requirement.get_id }}</th>
+           {% for testcase in all_testcases %}
+            <td>
+          {% if requirement in testcase.testc_fk_requirement.all %}
+                {{ testcase|passed_runs_2 }}
+           {% endif %}</td>
+            {% endfor %}
+        </tr>
+      {% endfor %}
+
+   </table>
+
+</div>
+
+<div class="Projekt select">
+   <table class="select_table" border="solid">
+        <tr>
+            <th> Name </th>
+            <th> Anzahl Requirements </th>
+            <th> Anzahl TestCases</th>
+            <th> Anzahl TestRuns</th>
+
+          </tr>
+    {% for user in users %}
+          <tr>
+            <th> {{ user.username }} </th>
+              <td> {{ user.requirement_set.count }}</td>
+              <td> {{ user.testcase_set.count }}</td>
+              <td> {{ user.testrun_set.count }}</td>
+          </tr>
+       {% endfor %}
+   </table>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+$('input[type="radio"]').click(function() {
+var inputValue = $(this).attr("value");
+var targetBox = $("." + inputValue);
+$(".select").not(targetBox).hide();
+$(targetBox).show();
+});
+});
+</script>
+
+{% endblock %}
+
+
+
+

@@ -1,0 +1,94 @@
+﻿{% extends "aut/000_base_bar.html" %}
+
+{% block titel %}
+<title>A&T TestRun</title>
+{% endblock %}
+
+{% load aut_extras %}
+
+{% block content %}
+<style>
+  #testr {
+  background-color: #58A7C6;
+}
+#tabellen{
+  margin-top: 1rem;
+  position:relative;
+  width:100%;
+  height: 35rem;
+  overflow: auto;
+}
+
+ul{
+  float: left;
+  list-style:none;
+  padding:0;
+  margin:0;
+  width:20%;
+  overflow:hidden;
+  overflow-y:scroll;
+  height: 100%;
+
+}
+li{
+  line-height:2rem;
+}
+
+#ifrm{
+  padding:0;
+  margin:0;
+  border: 0;
+  float: left;
+  width: 80%;
+  height: 100%;
+}
+
+
+ul li {
+margin: 5px;
+padding: 1px 1px 1px 1px;
+border: solid 1px black;
+}
+
+ul li a{
+text-decoration: none;}
+
+#testr_a{
+  background-color:white;
+  color: black;
+  text-align: center;
+  display: block;
+}
+#testr_a:hover {
+  background-color: #58A7C6;
+  color:  black;
+}
+#testr_a:link {
+  text-decoration: none;
+}
+
+</style>
+
+<div id="tabellen">
+    <ul id="testrunlist">
+    <li> <a id="testr_a" href="{% url 'aut:testrun_create' %}" target="ifrm" > Neuer TestRun</a>  </li>
+    {% for testrun in testruns %}
+      <li {{ testrun|testrun_color }}> <a href="{{ testrun.get_absolute_url }}" target="ifrm"> {{ testrun }}</a>  </li>
+    {% endfor %}
+
+</ul>
+
+
+    <iframe id="ifrm" name="ifrm" src="{% url 'aut:testr_desc' %}">
+        Your browser doesn't support iframes.
+    </iframe>
+</div>
+
+<script type="text/javascript">
+        document.getElementById('ifrm').onload = function() {
+           $("#testrunlist").load(location.href + " #testrunlist li");
+        }
+</script>
+
+{% endblock %}
+

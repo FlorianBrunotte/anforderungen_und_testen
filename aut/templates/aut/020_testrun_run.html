@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TestRun</title>
+
+{% load aut_extras %}
+<script>
+  function resizeIframe(obj) {
+    obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
+  }
+</script>
+
+
+</head>
+<style type="text/css">
+html {
+  font-size: calc(0.2rem + 1vw);
+}
+table, th, td {
+  border: 1px solid black;
+}
+th{
+  width: 25rem;
+}
+.tabelle{
+color: blue;
+position:relative;
+float:left;
+}
+
+</style>
+<body>
+    <h1>{{ testr_instance }}</h1>
+
+    <label id="hours">00</label>:<label id="minutes">00</label>:<label id="seconds">00</label>
+
+
+
+    <table id="Schritte_Tabelle" class="tabelle">
+
+
+<form action="{% url 'aut:testrun_run' pk=testr_instance.testr_pk_testrunid  %}" method="post">
+
+     {% csrf_token %}
+    {{ formset.management_form }}
+
+    {%for a, b in testc_schritte|zip:formset %}
+    <tr>
+        <td>Schritt</td>
+        <td> {{a.schritt_schritte}}</td>
+    </tr>
+
+    <tr>
+        <td>erwartetes Ergebnis</td>
+        <td> {{a.schritt_erwartetesergebnis}}</td>
+    </tr>
+
+    {{b}}
+<tr><th style="border: none; height: 1rem;"></th></tr>
+    {% endfor %}
+
+
+      <input id="timeinput" name="TIME" type="hidden" value=totalSeconds >
+  <input type="submit" value="TestRun Abschließen" onclick="myFunction()">
+ </form>
+      </table>
+
+
+        <script>
+var hoursLabel = document.getElementById("hours");
+var minutesLabel = document.getElementById("minutes");
+var secondsLabel = document.getElementById("seconds");
+var totalSeconds = 0;
+setInterval(setTime, 1000);
+
+function setTime() {
+  ++totalSeconds;
+  secondsLabel.innerHTML = pad(totalSeconds % 60);
+  minutesLabel.innerHTML = pad(parseInt(totalSeconds / 60));
+  hoursLabel.innerHTML = pad(parseInt(totalSeconds /  3600));
+}
+
+function pad(val) {
+  var valString = val + "";
+  if (valString.length < 2) {
+    return "0" + valString;
+  } else {
+    return valString;
+  }
+}
+
+function myFunction(){
+document.getElementById('timeinput').value = totalSeconds;
+}
+
+</script>
+
+<script>
+    var formSubmitting = false;
+var setFormSubmitting = function() { formSubmitting = true; };
+
+window.onload = function() {
+    window.addEventListener("beforeunload", function (e) {
+        if (formSubmitting) {
+            return undefined;
+        }
+
+        var confirmationMessage = 'It looks like you have been editing something. '
+                                + 'If you leave before saving, your changes will be lost.';
+
+        (e || window.event).returnValue = confirmationMessage; //Gecko + IE
+        return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
+    });
+};
+</script>
+
+</body>
+</html>

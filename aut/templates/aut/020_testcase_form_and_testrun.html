@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <title>Requirements Detail</title>
+    <link href="/static/aut/000_basebar.css" type="text/css" rel="stylesheet"/>
+    <script type="text/javascript" src="{{ STATIC_URL }} /static/jquery-3.5.1.js">
+    </script>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@600&display=swap" rel="stylesheet">
+    <link rel="icon" href="/static/aut/images/favicon.ico">
+</head>
+
+<!--setTimeout(function(){ parent.location.reload(); }, 3000); -->
+
+ <!--   parent.location.href=parent.location.href -->
+
+<body>
+
+
+
+
+<form action="" id="searchForm">
+    {% csrf_token %}
+    <table>
+    {{ form.as_table }}
+    </table>
+
+  <input type="submit" value="submit">
+</form>
+<!-- the result of the search will be rendered inside this div -->
+<div id="result"></div>
+
+<script>
+$('#myForm').submit(function() {
+    // Get all the forms elements and their values in one step
+    var values = $(this).serialize();
+
+});
+
+// Attach a submit handler to the form
+$( "#searchForm" ).submit(function( event ) {
+
+  // Stop form from submitting normally
+  event.preventDefault();
+
+  // Get some values from elements on the page:
+  var $form = $( this );
+  var values = $(this).serialize();
+  url = $form.attr( "action" );
+
+  // Send the data using post
+  var posting = $.post( url, values );
+
+  // Put the results in a div
+  posting.done(function() {
+    window.open(" {% url 'aut:view_testrun' %} ", "_parent");
+  });
+});
+</script>
+
+</body>
+</html>

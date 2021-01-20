@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Anmelden</title>
+</head>
+<body>
+<p>Bitte melden Sie sich an!</p>
+
+
+<form class="" action="index.html" method="post">
+  <div>
+    Matrikelnummer: <input type="text" required/>
+  </div>
+  <div>
+    Passwort: <input type="text" required/>
+  </div>
+{% load static %}
+<p><span><a href="{% url 'aut:view_dashboard' %}">Anmelden</a></span></p>
+
+</form>
+
+</body>
+</html>

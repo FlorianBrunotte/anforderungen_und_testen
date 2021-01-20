@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% block titel %} <title>Anforderungen und Testen</title> {% endblock %}
+
+    {% load static %}
+    <script type="text/javascript" src="{{ STATIC_URL }} /static/jquery-3.5.1.js"></script>
+    {% block morecss %} <!-- MORE --> {% endblock %}
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@600&display=swap" rel="stylesheet">
+    <link rel="icon" href="/static/aut/images/logo_small.png">
+</head>
+<style>
+    html {
+  font-size: calc(0.2rem + 1vw);
+}
+body {
+  position:relative;
+  height: auto;
+  width: auto;
+  text-align:left;
+}
+
+.textdisplay {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 900;
+  color:black;
+  text-align:center;
+}
+
+.heading_1 {
+  font-weight: bolder;
+  font-size:2rem;
+  text-align:left;
+}
+
+#statusleiste {
+  position:relative;
+  width:auto;
+  height:4rem;
+  z-index: 10;
+  border: 1px solid black;
+}
+
+#willkommen {
+  position: relative;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+font-weight: 700;
+  float: left;
+  display: inline-block;
+}
+
+#logo {
+  position: relative;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  float: right;
+  width: 4rem;
+  height: 3rem;
+  right: 1rem;
+}
+
+
+/* für die anderen Elemente in der Mitte */
+.dropdown {
+  margin-left: 1rem;
+  margin-bottom: 0;
+  padding-bottom: 0;
+  position: relative;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  display: inline-block;
+  font-size: 0;
+}
+
+.dropdown-content {
+  position: relative;
+  display: inline-block;
+  background-color: white;
+  transition: background 0.3s;
+  border: 1px solid black;
+}
+
+/* kleiner Trick mit der FOnt Size um die komische Sache wegzunekommen */
+.dropdown-content a {
+  font-size: calc(0.2rem + 1vw);
+  text-decoration: none;
+  padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+  display: inline-block;
+  transition: background-color 0.5s;
+}
+
+/* wenn man drüber hovered */
+.dropdown-content a:hover {
+    background-color: black;
+    color: white;
+}
+
+.dropdown-content a:active {
+    background-color: black;
+    color: white;
+}
+.dropdown-content a:link, .dropdown-content a:visited, {
+  color:black;
+}
+
+</style>
+<body>
+    <!-- Statusleiste Grundrahmen -->
+    <div id="statusleiste">
+
+      <!-- Die einzelnen Elemente -->
+
+      <!-- Willkommenstext -->
+
+      <div id="willkommen" class="textdisplay heading_1">
+        Willkommen,
+          {% if user.is_authenticated %}
+          {{ user.get_username }}
+           {% else %}
+
+          Hallo
+
+           {% endif %}
+      </div>
+
+
+      <!-- Logo -->
+      <img id="logo" src="/static/aut/images/logo_medium.png"/>
+
+      <!-- die anderen Elemente in der Mitte -->
+
+      <div class="dropdown">
+        <div class="dropdown-content textdisplay">
+
+          <a id="dash" href=" {% url 'aut:view_dashboard' %} ">Dashboard</a>
+          <a id="stat" href=" {% url 'aut:view_statistik' %} ">Statistik</a>
+
+        </div>
+      </div>
+
+        <div class="dropdown">
+        <div class="dropdown-content textdisplay">
+
+          <a id="req" href=" {% url 'aut:view_requirement' %} ">Requirements</a>
+          <a id="testc" href=" {% url 'aut:view_testcase' %} ">TestCases</a>
+          <a id="testr" href=" {% url 'aut:view_testrun' %} ">TestRuns</a>
+
+        </div>
+      </div>
+
+
+      <div class="dropdown">
+        <div class="dropdown-content textdisplay logout">
+
+            {% if user.is_authenticated %}
+
+     <a href="{% url 'logout'%}">Logout</a>
+   {% else %}
+     <a href="{% url 'login'%}">Login</a>
+   {% endif %}
+
+        </div>
+      </div>
+
+    </div>
+
+    {% block content %} <!-- Hier kommen die Seitenspezifischen Sachen rein --> {% endblock %}
+
+{% include 'aut/030_special_notepad.html' %}
+</body>
+</html>

@@ -1,0 +1,303 @@
+﻿{% extends "aut/000_base_bar.html" %}
+
+{% block titel %}
+<title>A&T Dashboard</title>
+{% endblock %}
+
+{% load aut_extras %}
+{% block content %}
+<!-- Hier kommen die Tables rein -->
+
+<style>
+  #dash {
+  background-color: black;
+  color: white;
+}
+</style>
+
+  <style>
+    #gruppenform{
+    display: inline-block;
+    border: green soiid 1px;
+    }
+  </style>
+  <style>
+    #button_drucken{
+    margin-top: 1rem;
+    display: inline-block;
+    text-align: center;
+    width: 100%;
+    }
+    #button_drucken_button{
+    width: 10rem;
+    height: 2rem;
+    font-size: inherit;
+    background-color: white;
+    color: black;
+    border: solid 1px black;
+    text-decoration: none;
+    }
+    #button_drucken_button:hover {
+    background-color: black;
+    color: white;
+    }
+  </style>
+  <style>
+    #errors{
+    margin-top: 1rem;
+    display: inline-block;
+    text-align: center;
+    width: 100%;
+    background-color: #ff9900;
+    }
+
+    html {
+  font-size: calc(0.2rem + 1vw);
+}
+body {
+  position:relative;
+  height: auto;
+  width: auto;
+  text-align:left;
+
+}
+
+/* Die Rows und Columns für den Rest */
+/* Create three equal columns that floats next to each other */
+#tabellen{
+  margin-top: 1rem;
+  position:relative;
+  width:auto;
+  height: auto;
+  overflow: auto;
+}
+/* Create three equal columns that floats next to each other */
+.column {
+  float: left;
+  width: 33.33%;
+  background-color: white;
+  text-align: center;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.table {
+  padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+}
+
+#req_table {
+  width: 100%;
+}
+
+#req_table td, th {
+  background-color: #FE877C;
+  text-align: center;
+  padding: 1rem 1rem 1rem 1rem; /* t r b l*/
+border: solid 1px;
+border-color: black;
+}
+
+#testc_table {
+  width: 100%;
+}
+
+#testc_table td, th {
+
+  background-color: #D4E88B;
+  text-align: center;
+  padding: 1rem 1rem 1rem 1rem; /* t r b l*/
+border: solid 1px;
+border-color: black;
+}
+#testr_table {
+  width: 100%;
+}
+
+#testr_table td, th {
+  background-color: #58A7C6;
+
+  text-align: center;
+  padding: 1rem 1rem 1rem 1rem; /* t r b l*/
+border: solid 1px;
+border-color: black;
+}
+
+#knoepfe_id{
+  margin-top: 3rem;
+  position: relative;
+  width:auto;
+  height: auto;
+  border-width:0.1rem;
+  border-style:solid;
+  border-color:red;
+  overflow: auto;
+}
+
+.knoepfe {
+  background-color: #668cff;
+  margin: auto;
+  border: 0.1rem solid red;
+  padding: 0.5rem;
+  width: 50%;
+  height: 50%;
+  padding: 0.1rem;
+
+}
+/* Create three equal columns that floats next to each other */
+.columnk {
+  float: left;
+  width: 33.33%;
+  text-align: center;
+}
+
+/* Clear floats after the columns */
+.rowk:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+
+
+.knoepfe_innen {
+  background-color: #668cff;
+  margin: auto;
+  border: 0.1rem solid red;
+  padding: 0.5rem;
+  width: 50%;
+  height: 50%;
+  padding: 0.1rem;
+
+}
+
+#gruppe {
+margin-top: 1rem;
+text-align: center;
+display: block;
+        padding: 0.2rem;
+        color: black;
+
+}
+  </style>
+
+
+    <div id="tabellen">
+    <div class="row">
+      <div class="column">
+        <table class="table textdisplay" id="req_table">
+          <tr>
+            <td>Requirements</td>
+            <td>{{num_req}}</td>
+          </tr>
+          <tr>
+            <td>Meine Requirements</td>
+            <td>{{num_req_eigene}}</td>
+          </tr>
+          <tr>
+            <td>Requirements mit TestCase</td>
+            <td>{{num_yes_testcase}}</td>
+          </tr>
+          <tr>
+            <td>Requirements ohne TestCase</td>
+            <td {{ num_no_testcase|rote_markierung }}>{{num_no_testcase}}</td>
+          </tr>
+
+        </table>
+       </div>
+      <div class="column">
+        <table class="table textdisplay" id="testc_table">
+          <tr>
+            <td>TestCases</td>
+            <td>{{ num_testc }}</td>
+          </tr>
+          <tr>
+            <td>Meine TestCases</td>
+            <td>{{ num_testc_eigene }}</td>
+          </tr>
+          <tr>
+            <td>TestCases mit Passed TestRun</td>
+            <td>{{ num_lis_yes_testrun_run_passed }}</td>
+          </tr>
+          <tr>
+            <td>TestCases mit Failed TestRun</td>
+            <td  {{ num_lis_yes_testrun_run_failed|rote_markierung }}>{{  num_lis_yes_testrun_run_failed}}</td>
+          </tr>
+          <tr>
+            <td>TestCases ohne TestRun</td>
+            <td  {{ num_lis_no_testrun_or_no_run|rote_markierung }}>{{num_lis_no_testrun_or_no_run  }}</td>
+          </tr>
+
+        </table>
+        </div>
+      <div class="column">
+        <table class="table textdisplay" id="testr_table">
+          <tr>
+            <td>TestRuns</td>
+            <td>{{ num_testr }}</td>
+          </tr>
+          <tr>
+            <td>Meine TestRuns</td>
+            <td>{{ num_testr_eigene }}</td>
+          </tr>
+          <tr>
+            <td>Passed TestRuns</td>
+            <td>{{ num_lis_passed_testrun }}</td>
+          </tr>
+          <tr>
+            <td>Failed TestRuns</td>
+            <td>{{ num_lis_failed_testrun }}</td>
+          </tr>
+          <tr>
+            <td>TestRuns ohne Run</td>
+            <td {{ num_lis_no_testrun|rote_markierung }}>{{ num_lis_no_testrun }}</td>
+          </tr>
+
+        </table>
+        </div>
+    </div>
+  </div>
+
+<div id="errors">
+  {% for line in check_for_errors %}
+  <p>{{ line }}</p>
+ {% endfor %}
+</div>
+
+<div id="button_drucken">
+  <a href="{% url 'aut:test2' %}">
+      <button id="button_drucken_button">
+    PDF Erstellen
+  </button>
+  </a>
+</div>
+
+
+<div id="gruppe">
+  {% if user.is_authenticated %}
+  {%  if user.user_erweitern.rolle == 'p' %}
+  <div id="gruppenform">
+<form action="" id="searchForm" method="post">
+    {% csrf_token %}
+  <p><label for="{{ form.group_form_group.id_for_label }}">Gruppennummer: </label>
+    {{ form.group_form_group }}
+  <input type="submit" value="submit"></p>
+</form>
+  </div>
+
+  {% endif %}
+  {% endif %}
+
+<p>Gruppe {{user_gruppennummer}}:
+  {% for user in all_users %}
+    {{user}}
+  {% endfor %}
+</p>
+
+</div>
+{% endblock %}
+

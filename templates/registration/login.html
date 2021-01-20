@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% block titel %} <title>Anforderungen und Testen</title> {% endblock %}
+
+    {% load static %}
+    <link href="/static/aut/000_base_css_bar.css" type="text/css" rel="stylesheet"/>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@600&display=swap" rel="stylesheet">
+    <link rel="icon" href="/static/aut/images/favicon.ico">
+</head>
+
+<style>
+    #loginscreen{
+    text-align: center;
+    position: relative;
+    top: 3rem;
+    }
+    #bild{
+    text-align: center;
+
+    }
+    #content {
+column-count: 2;
+column-gap: 10px;
+column-rule: 1px solid rgba(28,110,164,0.5);
+}
+
+#submit_button{
+border-radius: 8px;
+transition-duration: 0.4s;
+width: 5rem;
+height:3rem;
+position: relative;
+top: 1rem;
+}
+
+#submit_button:hover {
+  background-color: #4CAF50; /* Green */
+  color: white;
+}
+#forgot_button{
+border-radius: 8px;
+transition-duration: 0.4s;
+width: 5rem;
+height:3rem;
+position: relative;
+top: 1rem;
+}
+
+#forgot_button:hover {
+  background-color: #4CAF50; /* Green */
+  color: white;
+}
+
+
+#signup_button{
+border-radius: 8px;
+transition-duration: 0.4s;
+width: 5rem;
+height:3rem;
+position: relative;
+top: 1rem;
+}
+
+#signup_button:hover {
+  background-color: #4CAF50; /* Green */
+  color: white;
+}
+</style>
+<body>
+
+
+<div id="bild">
+    <img id="logo" src="/static/aut/images/logo_large.png" width="590px" height="200px"/>
+</div>
+
+
+<div id="loginscreen">
+
+  {% if form.errors %}
+    <p>Your username and password didn't match. Please try again.</p>
+  {% endif %}
+
+  {% if next %}
+    {% if user.is_authenticated %}
+      <p>Your account doesn't have access to this page. To proceed,
+      please login with an account that has access.</p>
+    {% else %}
+      <p>Please login to see this page.</p>
+    {% endif %}
+  {% endif %}
+
+  <form method="post" action="{% url 'login' %}" style="width: max-content; margin: auto;">
+    {% csrf_token %}
+    <table>
+      <tr>
+        <td>Benutzername</td>
+        <td>{{ form.username }}</td>
+      </tr>
+      <tr>
+        <td>Passwort</td>
+        <td>{{ form.password }}</td>
+      </tr>
+    </table>
+    <p><input type="submit" value="Einloggen" id="submit_button" /></p>
+    <input type="hidden" name="next" value="{{ next }}" />
+  {# Assumes you setup the password_reset view in your URLconf #}
+
+  </form>
+    <p><a href="{% url 'signup' %}"><button id="signup_button">Account erstellen</button></a></p>
+ </div>
+
+
+
+</body>
+</html>
