@@ -83,23 +83,23 @@ def requirement_color(requirement):
 #müssen noch getestet werden
 @register.filter(name='testcase_color')
 def testcase_color(testcase):
-    result = ' style=" background: linear-gradient(to right, #FFcccc 0%, #ffcccc 50%, #FF0000 100%);"'
+    result = ' style=" background: linear-gradient(to right, white 0%, white 80%, #FF0000 100%);"'
     if testcase.testrun_set.all().exists() and testcase.testc_fk_requirement.exists():
         if testcase.testrun_set.all().latest('testr_datum_aenderung').testr_status == 'p':
-            result = ' style=" background: linear-gradient(to right, #FFcccc 0%, #ffcccc 50%, #00ff00 100%);"'
+            result = ' style=" background: linear-gradient(to right, white 0%, white 80%, #00ff00 100%);"'
     return mark_safe(result)
 
 @register.filter(name='testrun_color')
 def testrun_color(testrun):
-    result = ' style=" background: linear-gradient(to right, white 0%, white 50%, #FF0000 100%);"'
+    result = ' style=" background: linear-gradient(to right, white 0%, white 80%, #FF0000 100%);"'
     if testrun.testr_fk_testcaseid and testrun.testr_status == 'p':
-        result = ' style=" background: linear-gradient(to right, white 0%, white 50%, #00ff00 100%);"'
+        result = ' style=" background: linear-gradient(to right, white 0%, white 80%, #00ff00 100%);"'
     if testrun.testr_fk_testcaseid and testrun.testr_status == 'n':
-        result = ' style=" background: linear-gradient(to right, white 0%, white 50%, #0000ff 100%);"'
+        result = ' style=" background: linear-gradient(to right, white 0%, white 80%, #0000ff 100%);"'
 
     #wenn der TestRun durchgefallen ist wird er orange markiert
     if testrun.testr_fk_testcaseid and testrun.testr_status == 'f':
-        result = ' style=" background: linear-gradient(to right, white 0%, white 50%, orange 100%);"'
+        result = ' style=" background: linear-gradient(to right, white 0%, white 80%, orange 100%);"'
 
     return mark_safe(result)
 
