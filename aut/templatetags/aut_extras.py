@@ -99,7 +99,7 @@ def testrun_color(testrun):
 
     #wenn der TestRun durchgefallen ist wird er orange markiert
     if testrun.testr_fk_testcaseid and testrun.testr_status == 'f':
-        result = ' style=" background: linear-gradient(to right, white 0%, white 50%, #FFaaaa 100%);"'
+        result = ' style=" background: linear-gradient(to right, white 0%, white 50%, orange 100%);"'
 
     return mark_safe(result)
 
