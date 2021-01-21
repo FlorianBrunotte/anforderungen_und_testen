@@ -31,7 +31,8 @@ DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
 # vorher Leer
 ALLOWED_HOSTS = ['safe-wildwood-70995.herokuapp.com',
-                 '127.0.0.1'] # vom Surface für das normale Laufen
+                 '127.0.0.1',
+                 'anforderungen-und-testen.herokuapp.com'] # vom Surface für das normale Laufen
 
 
 # Application definition
