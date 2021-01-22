@@ -151,7 +151,7 @@ class testrun_schritt(models.Model):
     schritt_erwartetesergebnis = models.CharField(max_length=128, null=True, blank=True)
 
     schritt_tatsaechlichesergebnis = models.CharField(max_length=128, null=True, blank=True)
-    schritt_ergebnis = models.CharField(max_length=1, choices=RUN_STATUS,null=True, blank=True)
+    schritt_ergebnis = models.CharField(max_length=1, choices=RUN_STATUS, default=RUN_STATUS[0])
 
     def __str__(self):
         return "ID: " + str(self.schritt_pk_id)

@@ -118,5 +118,13 @@ def rote_markierung(element):
 
 @register.filter(name='zip')
 def zip_lists(a, b):
-    print(b)
+    #for forms in b:
+     #   for field in forms:
+      #      print('field: ' + str(field))
+
+   # for a, b in zip(a, b):
+    #    print('a: ' + str(a))
+     #   print('b: ' + str(b['schritt_tatsaechlichesergebnis']))
+      #  print('b: ' + str(b['schritt_ergebnis']))
+
     return zip(a, b)
