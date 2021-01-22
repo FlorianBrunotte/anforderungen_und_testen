@@ -33,7 +33,8 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
 
-from .forms import RequirementForm, TestCaseForm, TestRunForm, TestCase_Schritt_Form, TestCase_Schritt_Form2, GroupForm, Note_Form
+from .forms import RequirementForm, TestCaseForm, TestRunForm, TestCase_Schritt_Form, TestCase_Schritt_Form2, GroupForm, \
+    Note_Form, SignUpForm
 from .choices import *
 from django.shortcuts import render
 
@@ -813,7 +814,7 @@ from django.shortcuts import render, redirect
 
 def signup(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = SignUpForm(request.POST)
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
@@ -828,5 +829,5 @@ def signup(request):
 
 
     else:
-        form = UserCreationForm()
+        form = SignUpForm()
     return render(request, 'aut/signup.html', {'form': form})

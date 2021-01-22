@@ -75,3 +75,16 @@ class TestCase_Schritte_Form(forms.Form):
 class Note_Form(forms.Form):
     # Felder die verändert werden können
     note_form = forms.CharField(required=False, label="",widget=forms.Textarea(attrs={"rows": 5, "cols": 60}))
+
+
+from django import forms
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
+
+
+class SignUpForm(UserCreationForm):
+    username = forms.CharField(max_length=15)
+
+    class Meta:
+        model = User
+        fields = ('username', 'password1', 'password2', )

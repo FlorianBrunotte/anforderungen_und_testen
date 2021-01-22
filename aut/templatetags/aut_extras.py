@@ -118,4 +118,5 @@ def rote_markierung(element):
 
 @register.filter(name='zip')
 def zip_lists(a, b):
+    print(b)
     return zip(a, b)
