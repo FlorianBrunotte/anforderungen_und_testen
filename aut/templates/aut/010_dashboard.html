@@ -1,27 +1,23 @@
 ﻿{% extends "aut/000_base_bar.html" %}
 
 {% block titel %}
-<title>A&T Dashboard</title>
+<title>Dashboard</title>
 {% endblock %}
 
 {% load aut_extras %}
+
 {% block content %}
-<!-- Hier kommen die Tables rein -->
 
 <style>
   #dash {
   background-color: black;
   color: white;
 }
-</style>
-
-  <style>
     #gruppenform{
     display: inline-block;
     border: green soiid 1px;
     }
-  </style>
-  <style>
+
     #button_drucken{
     margin-top: 1rem;
     display: inline-block;
@@ -29,20 +25,29 @@
     width: 100%;
     }
     #button_drucken_button{
-    width: 10rem;
-    height: 2rem;
-    font-size: inherit;
-    background-color: white;
-    color: black;
-    border: solid 1px black;
-    text-decoration: none;
+  position: relative;
+  display: inline-block;
+  background-color: white;
+  transition: background 0.3s;
+
+    font-size: calc(0.2rem + 1vw);
+  text-decoration: none;
+  padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+  display: inline-block;
+  transition: background-color 0.5s;
+  }
+  /* wenn man drüber hovered */
+
+ #button_drucken_button:hover{
+     background-color: black;
+    color: white;
+}
+
     }
     #button_drucken_button:hover {
     background-color: black;
     color: white;
     }
-  </style>
-  <style>
     #errors{
     margin-top: 1rem;
     display: inline-block;
@@ -186,6 +191,7 @@ display: block;
   </style>
 
 
+
     <div id="tabellen">
     <div class="row">
       <div class="column">
@@ -269,11 +275,7 @@ display: block;
 </div>
 
 <div id="button_drucken">
-  <a href="{% url 'aut:test2' %}">
-      <button id="button_drucken_button">
-    PDF Erstellen
-  </button>
-  </a>
+     <a href="{% url 'aut:test2' %}"><button id="button_drucken_button">PDF Erstellen</button></a>
 </div>
 
 
@@ -291,12 +293,6 @@ display: block;
 
   {% endif %}
   {% endif %}
-
-<p>Gruppe {{user_gruppennummer}}:
-  {% for user in all_users %}
-    {{user}}
-  {% endfor %}
-</p>
 
 </div>
 {% endblock %}

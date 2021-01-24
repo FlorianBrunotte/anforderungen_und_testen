@@ -92,21 +92,12 @@ text-decoration: none;
          <td>{{ form.testc_form_name }}
          <span id="chars1" class="noch"></span></td>
      </tr>
+
      <tr>
-         <td><label for="{{ form.testc_form_beschreibung.id_for_label }}">Beschreibung</label></td>
-         <td>{{ form.testc_form_beschreibung }}
-         <span id="chars2" class="noch"></span></td>
+         <td><label for="{{ form.testc_form_fk_requirement.id_for_label }}">Requirement</label></td>
+         <td>{{ form.testc_form_fk_requirement }}</td>
      </tr>
-     <tr>
-         <td><label for="{{ form.testc_form_kommentar.id_for_label }}">Kommentar</label></td>
-         <td>{{ form.testc_form_kommentar }}
-         <span id="chars3" class="noch"></span></td>
-     </tr>
-     <tr>
-         <td><label for="{{ form.testc_form_vorbedingung.id_for_label }}">Vorbedingung</label></td>
-         <td>{{ form.testc_form_vorbedingung }}
-         <span id="chars4" class="noch"></span></td>
-     </tr>
+
      <tr>
          <td> TestSchritte </td>
          <td>
@@ -119,6 +110,10 @@ text-decoration: none;
              {{ formset.management_form }}
 
              {% for form in formset %}
+             <td>  {{ form.DELETE }}</td>
+<td>  {{ form.schritte_schritt }}</td>
+<td>  {{ form.schritt_erwartetesergebnis }}</td>
+
                  <tr>
              {% for field in form %}
              <td>  {{ field }}</td>
@@ -136,10 +131,6 @@ text-decoration: none;
      </tr>
 
      <tr>
-         <td><label for="{{ form.testc_form_fk_requirement.id_for_label }}">Requirement</label></td>
-         <td>{{ form.testc_form_fk_requirement }}</td>
-     </tr>
-     <tr>
          <td>TestRuns:</td>
          <td>
              {% for testrun in testruns %}
@@ -151,6 +142,22 @@ text-decoration: none;
          </td>
      </tr>
 
+
+     <tr>
+         <td><label for="{{ form.testc_form_beschreibung.id_for_label }}">Beschreibung</label></td>
+         <td>{{ form.testc_form_beschreibung }}
+         <span id="chars2" class="noch"></span></td>
+     </tr>
+     <tr>
+         <td><label for="{{ form.testc_form_kommentar.id_for_label }}">Kommentar</label></td>
+         <td>{{ form.testc_form_kommentar }}
+         <span id="chars3" class="noch"></span></td>
+     </tr>
+     <tr>
+         <td><label for="{{ form.testc_form_vorbedingung.id_for_label }}">Vorbedingung</label></td>
+         <td>{{ form.testc_form_vorbedingung }}
+         <span id="chars4" class="noch"></span></td>
+     </tr>
  </table>
  </form>
 

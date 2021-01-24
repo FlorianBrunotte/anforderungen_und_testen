@@ -3,14 +3,12 @@ from .models import requirement, testcase
 #import der Choices damit die überall verwendbar sind
 from .choices import *
 
-
+#Nur hier müssen die Sachen angepasst werden
 class RequirementForm(forms.Form):
     #Felder die verändert werden können
-    req_form_name = forms.CharField(widget=forms.Textarea(attrs={"rows": 1, "cols": 100}), max_length=100)
-    req_form_beschreibung = forms.CharField(widget=forms.Textarea(attrs={"rows": 2, "cols": 100}), max_length=100)
-    req_form_kommentar = forms.CharField(widget=forms.Textarea(attrs={"rows": 2, "cols": 100}), max_length=100)
-
-    form_category = forms.ChoiceField(choices=KATEGORIEN)
+    req_form_name = forms.CharField(widget=forms.Textarea(attrs={"rows": 1, "cols": 100}), max_length=100, required=False)
+    req_form_beschreibung = forms.CharField(widget=forms.Textarea(attrs={"rows": 2, "cols": 100}), max_length=300, required=False)
+    req_form_kommentar = forms.CharField(widget=forms.Textarea(attrs={"rows": 2, "cols": 100}), max_length=300, required=False)
 
     #TestCases
     req_form_fk_testcase = forms.ModelMultipleChoiceField(queryset=None ,widget=forms.CheckboxSelectMultiple, required=False)
@@ -22,7 +20,7 @@ class RequirementForm(forms.Form):
 
 class TestCaseForm(forms.Form):
     #Felder die verändert werden können
-    testc_form_name = forms.CharField(widget=forms.Textarea(attrs={"rows": 2, "cols": 80}))
+    testc_form_name = forms.CharField(widget=forms.Textarea(attrs={"rows": 1, "cols": 100}))
     testc_form_beschreibung = forms.CharField(widget=forms.Textarea(attrs={"rows": 5, "cols": 80}))
     testc_form_kommentar = forms.CharField(widget=forms.Textarea(attrs={"rows": 5, "cols": 80}))
     testc_form_vorbedingung = forms.CharField(widget=forms.Textarea(attrs={"rows": 5, "cols": 80}))

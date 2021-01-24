@@ -8,26 +8,18 @@
     <script type="text/javascript" src="{{ STATIC_URL }} /static/jquery-3.5.1.js"></script>
     {% block morecss %} <!-- MORE --> {% endblock %}
 
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@600&display=swap" rel="stylesheet">
     <link rel="icon" href="/static/aut/images/logo_small.png">
 </head>
 <style>
     html {
   font-size: calc(0.2rem + 1vw);
+  font-family: Arial, sans-serif;
 }
 body {
   position:relative;
   height: auto;
   width: auto;
   text-align:left;
-}
-
-.textdisplay {
-  font-family: 'Source Sans Pro', sans-serif;
-  font-weight: 900;
-  color:black;
-  text-align:center;
 }
 
 .heading_1 {
@@ -79,16 +71,15 @@ font-weight: 700;
   font-size: 0;
 }
 
-.dropdown-content {
+.dropdown-content button {
   position: relative;
   display: inline-block;
   background-color: white;
   transition: background 0.3s;
-  border: 1px solid black;
 }
 
 /* kleiner Trick mit der FOnt Size um die komische Sache wegzunekommen */
-.dropdown-content a {
+.dropdown-content button {
   font-size: calc(0.2rem + 1vw);
   text-decoration: none;
   padding: 0.5rem 0.5rem 0.5rem 0.5rem;
@@ -97,16 +88,16 @@ font-weight: 700;
 }
 
 /* wenn man drüber hovered */
-.dropdown-content a:hover {
+.dropdown-content button:hover {
     background-color: black;
     color: white;
 }
 
-.dropdown-content a:active {
+.dropdown-content button:active {
     background-color: black;
     color: white;
 }
-.dropdown-content a:link, .dropdown-content a:visited, {
+.dropdown-content button:link, .dropdown-content button:visited, {
   color:black;
 }
 
@@ -139,8 +130,8 @@ font-weight: 700;
       <div class="dropdown">
         <div class="dropdown-content textdisplay">
 
-          <a id="dash" href=" {% url 'aut:view_dashboard' %} ">Dashboard</a>
-          <a id="stat" href=" {% url 'aut:view_statistik' %} ">Statistik</a>
+          <a id="dash" href=" {% url 'aut:view_dashboard' %} "><button>Dashboard</button></a>
+          <a id="stat" href=" {% url 'aut:view_statistik' %} "><button>Statistik</button></a>
 
         </div>
       </div>
@@ -148,9 +139,9 @@ font-weight: 700;
         <div class="dropdown">
         <div class="dropdown-content textdisplay">
 
-          <a id="req" href=" {% url 'aut:view_requirement' %} ">Requirements</a>
-          <a id="testc" href=" {% url 'aut:view_testcase' %} ">TestCases</a>
-          <a id="testr" href=" {% url 'aut:view_testrun' %} ">TestRuns</a>
+          <a id="req" href=" {% url 'aut:view_requirement' %} "><button>Requirements</button></a>
+          <a id="testc" href=" {% url 'aut:view_testcase' %} "><button>TestCases</button></a>
+          <a id="testr" href=" {% url 'aut:view_testrun' %} "><button>TestRuns</button></a>
 
         </div>
       </div>
@@ -161,9 +152,9 @@ font-weight: 700;
 
             {% if user.is_authenticated %}
 
-     <a href="{% url 'logout'%}">Logout</a>
+     <a href="{% url 'logout'%}"><button>Logout</button></a>
    {% else %}
-     <a href="{% url 'login'%}">Login</a>
+     <a href="{% url 'login'%}"><button>Login</button></a>
    {% endif %}
 
         </div>

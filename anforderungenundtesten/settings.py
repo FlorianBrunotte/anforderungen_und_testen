@@ -88,10 +88,10 @@ WSGI_APPLICATION = 'anforderungenundtesten.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': '1812178_ANFUNDTEST2', #ANFUNDTEST
-        'USER': '1812178', #postgres
-        'PASSWORD': 'Koeln18101998!', #also das Masterpassword oder doch das Passwort vom User Für PC Koeln18101998! für Surcafe koeln18101998
-        'HOST': '141.19.96.205', #oder localhost unter Windows immer definieren
+        'NAME': 'ANFUNDTEST', #ANFUNDTEST
+        'USER': 'postgres', #postgres
+        'PASSWORD': 'koeln18101998', #also das Masterpassword oder doch das Passwort vom User Für PC Koeln18101998! für Surcafe koeln18101998
+        'HOST': 'localhost', #oder localhost unter Windows immer definieren
         'PORT': '5432',
     }
 }

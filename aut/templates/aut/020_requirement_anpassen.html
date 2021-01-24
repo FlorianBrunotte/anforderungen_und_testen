@@ -9,8 +9,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@600&display=swap" rel="stylesheet">
 </head>
 <style type="text/css">
-html {
+    html {
   font-size: calc(0.2rem + 1vw);
+  font-family: Arial, sans-serif;
 }
 table, th, td {
   border: 1px solid black;
@@ -22,7 +23,15 @@ table{
   margin-left: auto;
   margin-right: auto;
 }
+li{
+  text-decoration: none;
+  list-style-type:none;
+  }
 
+ ul{
+  float: left;
+
+ }
 .column2 {
   float: left;
   width: 100%;
@@ -88,6 +97,11 @@ text-decoration: none;
 
      </tr>
      <tr>
+         <td><label for="{{ form.req_form_fk_testcase.id_for_label }}">TestCases</label></td>
+         <td>{{ form.req_form_fk_testcase }}</td>
+
+     </tr>
+     <tr>
          <td><label for="{{ form.req_form_beschreibung.id_for_label }}">Beschreibung</label></td>
          <td>{{ form.req_form_beschreibung }}
          <span id="chars2" class="noch"></span></td>
@@ -96,16 +110,6 @@ text-decoration: none;
          <td><label for="{{ form.req_form_kommentar.id_for_label }}">Kommentar</label></td>
          <td>{{ form.req_form_kommentar }}
          <span id="chars3" class="noch"></span></td>
-     </tr>
-     <tr>
-         <td><label for="{{ form.form_category.id_for_label }}">Kategorie</label></td>
-         <td>{{ form.form_category }}</td>
-
-     </tr>
-     <tr>
-         <td><label for="{{ form.req_form_fk_testcase.id_for_label }}">TestCases</label></td>
-         <td>{{ form.req_form_fk_testcase }}</td>
-
      </tr>
 
 
@@ -119,6 +123,7 @@ text-decoration: none;
 
 <script>
 var maxLength = 100;
+var maxLength2 = 300;
 $('#chars1').text(' characters remaining');
 $('#chars2').text(' characters remaining');
 $('#chars3').text(' characters remaining');
@@ -129,12 +134,12 @@ $('#id_req_form_name').keyup(function() {
 });
 $('#id_req_form_beschreibung').keyup(function() {
   var length = $(this).val().length;
-  var length = maxLength-length;
+  var length = maxLength2-length;
   $('#chars2').text(length + ' characters remaining');
 });
 $('#id_req_form_kommentar').keyup(function() {
   var length = $(this).val().length;
-  var length = maxLength-length;
+  var length = maxLength2-length;
   $('#chars3').text(length + ' characters remaining');
 });
 

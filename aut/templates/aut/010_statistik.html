@@ -35,7 +35,6 @@ text-align: center;
 }
   #radiobuttons {
   margin-top: 1rem;
-  background-color: #0099ff;
   text-align:center;
 }
 </style>
@@ -54,11 +53,12 @@ value="Projekt">Projekt</label>
 
 <div class="TestCase select" style="display: block;">
         <div>
-        <p style="color: red;">Formel von TestCase Coverage: Requirements mit TestCase / Requirements</p>
-        <p style="color: red;">Ergebnis: {{ TestCase_Coverage }} %</p>
+        <p>Formel von TestCase Coverage: Requirements mit TestCase / Requirements</p>
+        <p>Ergebnis: {{ TestCase_Coverage }} %</p>
+            <p>&nbsp;</p>
+
     </div>
    <table class="select_table" border="solid">
-
           <tr>
             <th>Requirements X TestCase</th>
             {% for testcase in all_testcases %}
@@ -84,9 +84,9 @@ value="Projekt">Projekt</label>
 
 <div class="TestRun select">
         <div>
-        <p style="color: red;">Formel von TestRun Coverage: Requirements mit erfolgreichem TestRun / Requirements</p>
-        <p style="color: red;">Ergebnis: {{ TestRun_Coverage }} %</p>
-        <p>Durschnitt: Min: Max: </p>
+        <p>Formel von TestRun Coverage: Requirements mit erfolgreichem TestRun / Requirements</p>
+        <p>Ergebnis: {{ TestRun_Coverage }} %</p>
+        <p>Durschnitt: {{ durchschnitt_testrun }} Min: {{ min_testrun }} Max: {{ max_testrun }}</p>
 
     </div>
    <table class="select_table" border="solid">
@@ -116,6 +116,7 @@ value="Projekt">Projekt</label>
 
 <div class="Projekt select">
    <table class="select_table" border="solid">
+       <tr>Gruppe {{ usergruppe }}</tr>
         <tr>
             <th> Name </th>
             <th> Anzahl Requirements </th>

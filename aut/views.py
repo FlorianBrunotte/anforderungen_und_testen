@@ -7,6 +7,7 @@ from pathlib import Path
 from PIL import Image
 from django import forms
 from django.contrib.auth.models import User
+from django.db.models import Avg
 from django.shortcuts import render, redirect
 import datetime
 # Create your views here.
@@ -23,8 +24,7 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import cm
 from reportlab.lib.utils import ImageReader
 
-from .models import professor, projekt, student, requirement, testcase, testrun, testcase_schritt, note, \
-    testrun_schritt, user_erweitern
+from .models import requirement, testcase, testrun, testcase_schritt, note, testrun_schritt, user_erweitern
 
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -43,7 +43,7 @@ from .forms import TestCase_Schritte_Form
 
 # importing formset_factory
 from django.forms import modelformset_factory, inlineformset_factory
-
+from django.db.models import Avg, Max, Min
 
 #Ende der Imports
 ########################################################################################################################
@@ -244,7 +244,6 @@ def edit_requirement(request, pk=None):
             return HttpResponse(name + " wurde gelöscht")
 
         if form.is_valid():
-            requ_instance.req_kategorie = form.cleaned_data['form_category']
             requ_instance.req_kommentar = form.cleaned_data['req_form_kommentar']
             requ_instance.req_name = form.cleaned_data['req_form_name']
             requ_instance.req_beschreibung = form.cleaned_data['req_form_beschreibung']
@@ -265,8 +264,7 @@ def edit_requirement(request, pk=None):
             requ_instance.save()
             return HttpResponseRedirect(reverse('aut:requirement_change', kwargs={'pk': pk}))
     else:
-      form = RequirementForm(initial={'form_category': requ_instance.req_kategorie,
-                                      'req_form_kommentar': requ_instance.req_kommentar,
+      form = RequirementForm(initial={'req_form_kommentar': requ_instance.req_kommentar,
                                       'req_form_name': requ_instance.req_name,
                                       'req_form_beschreibung': requ_instance.req_beschreibung,
       'req_form_fk_testcase': requ_instance.testcase_set.all(),
@@ -300,11 +298,10 @@ def edit_testcase(request, pk=None):
 
     #oder einfach testcase instance
     tc = testcase.objects.get(testc_pk_testcaseid=testc_instance.testc_pk_testcaseid)
-    print(tc)
+
     TestCase_Schritt_FormSet = inlineformset_factory(testcase, testcase_schritt,
                                                      fields=('schritt_schritte', 'schritt_erwartetesergebnis'),
                                                      can_delete=True, extra=1)
-    print(TestCase_Schritt_FormSet)
 
 
     users = User.objects.filter(user_erweitern__gruppennummer=request.user.user_erweitern.gruppennummer).filter(user_erweitern__rolle='s')
@@ -323,8 +320,6 @@ def edit_testcase(request, pk=None):
         form = TestCaseForm(request.POST, reqs=req_for_usergroup)
         schritt_form = TestCase_Schritt_Form(request.POST) #das kann weg
         formset = TestCase_Schritt_FormSet(request.POST, instance=tc)
-        print(formset)
-
 
         if formset.is_valid():
             formset.save()
@@ -476,7 +471,8 @@ def testrun_run(request, pk):
                 testr_instance.testr_status = 'f'
 
         if request.POST.get("TIME"):
-            testr_instance.testr_dauer = str(datetime.timedelta(seconds=int(request.POST.get("TIME"))))
+            testr_instance.testr_dauer = int(request.POST.get("TIME"))
+            #testr_instance.testr_dauer = str(datetime.timedelta(seconds=int(request.POST.get("TIME"))))
             testr_instance.save()
 
         testc = testcase.objects.get(testc_pk_testcaseid=testr_instance.testr_fk_testcaseid.testc_pk_testcaseid)
@@ -595,13 +591,26 @@ def view_statistik(request):
     #Projektstatisitk über Studenten der gleichen Gruppe:
     users = User.objects.filter(user_erweitern__gruppennummer=request.user.user_erweitern.gruppennummer).filter(user_erweitern__rolle='s')
 
+    #Zeiten der Testruns:
+    min_testrun = testrun.objects.all().aggregate(Min('testr_dauer'))
+    max_testrun = testrun.objects.all().aggregate(Max('testr_dauer'))
+    durchschnitt_testrun = testrun.objects.all().aggregate(Avg('testr_dauer'))
+
+    #Usergruppe:
+    usergruppe = request.user.user_erweitern.gruppennummer
+
+
     context = {
         'all_requirements': req_for_usergroup,
         'all_testcases': testc_for_usergroup,
         'all_testruns': testr_for_usergroup,
         'TestCase_Coverage': TestCase_Coverage,
         'TestRun_Coverage': TestRun_Coverage,
-        'users': users
+        'users': users,
+        'min_testrun': min_testrun,
+        'max_testrun': max_testrun,
+        'durchschnitt_testrun': durchschnitt_testrun,
+        'usergruppe': usergruppe
     }
 
     return render(request, 'aut/010_statistik.html', context)
@@ -830,3 +839,8 @@ def signup(request):
     else:
         form = SignUpForm()
     return render(request, 'aut/signup.html', {'form': form})
+
+
+
+def easteregg(request):
+    return redirect('https://www.youtube.com/watch?v=DLzxrzFCyOs&ab_channel=AllKindsOfStuff')

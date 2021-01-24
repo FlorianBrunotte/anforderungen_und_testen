@@ -45,5 +45,8 @@ urlpatterns = [
 
     path('test2', views.TestDocument, name='test2'),
 
+    path('easteregg', views.easteregg, name='easteregg'),
+
+
 ]
 
