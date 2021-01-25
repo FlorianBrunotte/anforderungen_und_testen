@@ -52,25 +52,26 @@ border: solid 1px black;
 ul li a{
 text-decoration: none;}
 
-#req_a{
-  background-color:white;
-  color: black;
-  text-align: center;
-  display: block;
+#req_a button{
+position: relative;
+background-color: white;
+width: 100%;
+font-size: calc(0.2rem + 1vw);
+text-decoration: none;
+padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+display: inline-block;
+transition: background-color 0.5s;
 }
-#req_a:hover {
-  background-color: #FE877C;
-  color:  black;
-}
-#req_a:link {
-  text-decoration: none;
+#req_a button:hover {
+    background-color: #FE877C;
+    color: white;
 }
 
 </style>
 
 <div id="tabellen">
     <ul id="requirementlist">
-    <li> <a id="req_a" href="{% url 'aut:requirement_create' %}" target="ifrm" > Neues Requirement</a>  </li>
+    <li> <a id="req_a" href="{% url 'aut:requirement_create' %}" target="ifrm" ><button>Neues Requirement</button></a>  </li>
     {% for requirement in requirements %}
       <li {{ requirement|requirement_color }} > <a href="{{ requirement.get_absolute_url }}" target="ifrm"> {{ requirement }}</a>  </li>
     {% endfor %}

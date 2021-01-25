@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
 
     {% load static %}
+
+{% load aut_extras %}
     <script type="text/javascript" src="{{ STATIC_URL }} /static/jquery-3.5.1.js"></script>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@600&display=swap" rel="stylesheet">
@@ -48,16 +50,18 @@ height: 100%;
     display: block;
     text-align: right;
   }
-.buttons{
-height: 2rem;
+.buttons {
+position: relative;
 background-color: white;
-color: black;
-border: solid 1px black;
+width: 100%;
+font-size: calc(0.2rem + 1vw);
 text-decoration: none;
+padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+display: inline-block;
+transition: background-color 0.5s;
 }
-
-.buttons:hover{
-    background-color: black;
+.buttons:hover {
+    background-color: #58A7C6;
     color: white;
 }
 </style>
@@ -136,7 +140,7 @@ text-decoration: none;
      </tr>
      <tr>
          <td>Dauer</td>
-         <td>{{ testr_instance.testr_dauer }}</td>
+         <td>{{ testr_instance.testr_dauer|zeit }}</td>
      </tr>
      <tr>
          <td>TestCase</td>

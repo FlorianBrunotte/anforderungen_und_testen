@@ -1,3 +1,5 @@
+import datetime
+
 from django import template
 from django.http import HttpResponse
 from django.utils.safestring import mark_safe
@@ -128,3 +130,9 @@ def zip_lists(a, b):
       #  print('b: ' + str(b['schritt_ergebnis']))
 
     return zip(a, b)
+
+
+@register.filter(name='zeit')
+def zeit(dauer):
+
+    return str(datetime.timedelta(seconds=int(dauer)))

@@ -12,6 +12,7 @@
     html {
   font-size: calc(0.2rem + 1vw);
   font-family: Arial, sans-serif;
+  text-align: left;
 }
 table, th, td {
   border: 1px solid black;
@@ -30,6 +31,7 @@ li{
 
  ul{
   float: left;
+  text-align: left;
 
  }
 .column2 {
@@ -57,16 +59,19 @@ height: 100%;
     display: block;
     text-align: right;
   }
-.buttons{
-height: 2rem;
-background-color: white;
-color: black;
-border: solid 1px black;
-text-decoration: none;
-}
 
-.buttons:hover{
-    background-color: black;
+.buttons {
+position: relative;
+background-color: white;
+width: 100%;
+font-size: calc(0.2rem + 1vw);
+text-decoration: none;
+padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+display: inline-block;
+transition: background-color 0.5s;
+}
+.buttons:hover {
+    background-color: #FE877C;
     color: white;
 }
 </style>

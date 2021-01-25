@@ -29,7 +29,7 @@ column-rule: 1px solid rgba(28,110,164,0.5);
 }
 
 #submit_button{
-border-radius: 8px;
+background-color: white;
 transition-duration: 0.4s;
 width: 5rem;
 height:3rem;
@@ -41,23 +41,10 @@ top: 1rem;
   background-color: #4CAF50; /* Green */
   color: white;
 }
-#forgot_button{
-border-radius: 8px;
-transition-duration: 0.4s;
-width: 5rem;
-height:3rem;
-position: relative;
-top: 1rem;
-}
-
-#forgot_button:hover {
-  background-color: #4CAF50; /* Green */
-  color: white;
-}
 
 
 #signup_button{
-border-radius: 8px;
+background-color: white;
 transition-duration: 0.4s;
 width: 5rem;
 height:3rem;
@@ -97,11 +84,11 @@ top: 1rem;
     {% csrf_token %}
     <table>
       <tr>
-        <td>Benutzername</td>
+        <td style="text-align: right">Benutzername</td>
         <td>{{ form.username }}</td>
       </tr>
       <tr>
-        <td>Passwort</td>
+        <td  style="text-align: right">Passwort</td>
         <td>{{ form.password }}</td>
       </tr>
     </table>

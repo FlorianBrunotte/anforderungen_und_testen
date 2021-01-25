@@ -27,14 +27,17 @@ th{
 color: blue;
 position:relative;
 float:left;
+width: 100%;
 }
-
+#ab_button{
+width:100%;
+}
 </style>
 <body>
     <h1>{{ testr_instance }}</h1>
 
-    <label id="hours">00</label>:<label id="minutes">00</label>:<label id="seconds">00</label>
-
+<p>    <label id="hours">00</label>:<label id="minutes">00</label>:<label id="seconds">00</label>
+</p>
 
 
     <table id="Schritte_Tabelle" class="tabelle">
@@ -45,43 +48,32 @@ float:left;
      {% csrf_token %}
     {{ formset.management_form }}
 
-    {%for a, b in testc_schritte|zip:formset %}
     <tr>
         <td>Schritt</td>
-        <td> {{a.schritt_schritte}}</td>
-    </tr>
-
-    <tr>
         <td>erwartetes Ergebnis</td>
-        <td> {{a.schritt_erwartetesergebnis}}</td>
+        <td>tatsächliches Ergebnis</td>
+        <td>Ergebnis</td>
+
     </tr>
+    {%for a, b in testc_schritte|zip:formset %}
+
 
     <tr>
-        <td>
-            tatsächliches Ergebnis
-        </td>
-        <td>
-
-    {{ b.schritt_tatsaechlichesergebnis }}
-        </td>
-    </tr>
-<tr>
-        <td>
-            Ergebnis
-        </td>
-        <td>
-
-    {{ b.schritt_ergebnis }}
-        </td>
+        <td> {{a.schritt_schritte}}</td>
+        <td> {{a.schritt_erwartetesergebnis}}</td>
+        <td>{{ b.schritt_tatsaechlichesergebnis }}</td>
+        <td>{{ b.schritt_ergebnis }}</td>
     </tr>
 
-<tr><th style="border: none; height: 1rem;"></th></tr>
     {% endfor %}
 
+    <tr>
 
       <input id="timeinput" name="TIME" type="hidden" value=totalSeconds >
-  <input type="submit" value="TestRun Abschließen" onclick="myFunction()">
- </form>
+  <td colspan="4"><input type="submit" id="ab_button" value="TestRun Abschließen" onclick="myFunction()">
+</td>
+</form>
+        </tr>
       </table>
 
 

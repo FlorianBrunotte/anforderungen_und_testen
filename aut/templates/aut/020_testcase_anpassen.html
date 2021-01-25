@@ -51,16 +51,18 @@ height: 100%;
     text-align: right;
   }
 
-.buttons{
-height: 2rem;
+.buttons {
+position: relative;
 background-color: white;
-color: black;
-border: solid 1px black;
+width: 100%;
+font-size: calc(0.2rem + 1vw);
 text-decoration: none;
+padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+display: inline-block;
+transition: background-color 0.5s;
 }
-
-.buttons:hover{
-    background-color: black;
+.buttons:hover {
+    background-color: #D4E88B;
     color: white;
 }
 </style>
@@ -104,28 +106,37 @@ text-decoration: none;
 
              <table id="Schritte Tabelle">
                  <tr>
-			<td>Schritt </td> <td>erwartetes Ergebnis</td> <td></td><td>Löschen?</td>
+			<td>Schritt </td> <td>erwartetes Ergebnis</td> <td>Löschen?</td>
 		</tr>
-             <form>
+
+             <form  method="post">
              {{ formset.management_form }}
 
              {% for form in formset %}
-             <td>  {{ form.DELETE }}</td>
-<td>  {{ form.schritte_schritt }}</td>
-<td>  {{ form.schritt_erwartetesergebnis }}</td>
 
                  <tr>
-             {% for field in form %}
-             <td>  {{ field }}</td>
-             {% endfor %}
-             </tr>
+<td>  {{ form.schritt_schritte }}</td>
+<td>  {{ form.schritt_erwartetesergebnis }}</td>
+             <td>  {{ form.DELETE }}</td>
+              {{ form.schritt_pk_id }}
+                {{ form.schritt_fk_testcase }}
+
+
+</tr>
+
              {% endfor %}
 
             </form>
-      </table>
+                 <tr>  <td colspan="3">
              <div id="Schritte_submit">
-             <input type="submit" value="Neue Zeile">
+             <input class="buttons" type="submit" value="Neue Zeile">
                 </div>
+
+
+
+                 </td></tr>
+      </table>
+
 
          </td>
      </tr>

@@ -52,25 +52,27 @@ border: solid 1px black;
 ul li a{
 text-decoration: none;}
 
-#testc_a{
-  background-color:white;
-  color: black;
-  text-align: center;
-  display: block;
+#testc_a button{
+position: relative;
+background-color: white;
+width: 100%;
+font-size: calc(0.2rem + 1vw);
+text-decoration: none;
+padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+display: inline-block;
+transition: background-color 0.5s;
 }
-#testc_a:hover {
-  background-color: #D4E88B;
-  color:  black;
+#testc_a button:hover {
+    background-color: #D4E88B;
+    color: white;
 }
-#testc_a:link {
-  text-decoration: none;
-}
+
 
 </style>
 
 <div id="tabellen">
     <ul id="testcaselist">
-    <li> <a id="testc_a" href="{% url 'aut:testcase_create' %}" target="ifrm" > Neuer TestCase</a>  </li>
+    <li> <a id="testc_a" href="{% url 'aut:testcase_create' %}" target="ifrm" > <button>Neuer Testcase</button> </a>  </li>
     {% for testcase in testcases %}
       <li {{ testcase|testcase_color }}> <a href="{{ testcase.get_absolute_url }}" target="ifrm"> {{ testcase }}</a>  </li>
     {% endfor %}

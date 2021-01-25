@@ -472,7 +472,6 @@ def testrun_run(request, pk):
 
         if request.POST.get("TIME"):
             testr_instance.testr_dauer = int(request.POST.get("TIME"))
-            #testr_instance.testr_dauer = str(datetime.timedelta(seconds=int(request.POST.get("TIME"))))
             testr_instance.save()
 
         testc = testcase.objects.get(testc_pk_testcaseid=testr_instance.testr_fk_testcaseid.testc_pk_testcaseid)

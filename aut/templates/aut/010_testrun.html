@@ -53,25 +53,28 @@ border: solid 1px black;
 ul li a{
 text-decoration: none;}
 
-#testr_a{
-  background-color:white;
-  color: black;
-  text-align: center;
-  display: block;
+
+#testr_a button{
+position: relative;
+background-color: white;
+width: 100%;
+font-size: calc(0.2rem + 1vw);
+text-decoration: none;
+padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+display: inline-block;
+transition: background-color 0.5s;
 }
-#testr_a:hover {
-  background-color: #58A7C6;
-  color:  black;
+#testr_a button:hover {
+    background-color: #58A7C6;
+    color: white;
 }
-#testr_a:link {
-  text-decoration: none;
-}
+
 
 </style>
 
 <div id="tabellen">
     <ul id="testrunlist">
-    <li> <a id="testr_a" href="{% url 'aut:testrun_create' %}" target="ifrm" > Neuer TestRun</a>  </li>
+    <li> <a id="testr_a" href="{% url 'aut:testrun_create' %}" target="ifrm" > <button>Neuer Testrun</button></a>  </li>
     {% for testrun in testruns %}
       <li {{ testrun|testrun_color }}> <a href="{{ testrun.get_absolute_url }}" target="ifrm"> {{ testrun }}</a>  </li>
     {% endfor %}

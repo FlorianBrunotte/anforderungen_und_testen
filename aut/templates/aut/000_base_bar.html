@@ -93,6 +93,21 @@ font-weight: 700;
     color: white;
 }
 
+#req:hover{
+    background-color: #FE877C;
+    color: white;
+
+}
+#testc:hover{
+    background-color: #D4E88B;
+    color: white;
+
+}
+#testr:hover{
+    background-color: #58A7C6;
+    color: white;
+
+}
 .dropdown-content button:active {
     background-color: black;
     color: white;
@@ -129,20 +144,16 @@ font-weight: 700;
 
       <div class="dropdown">
         <div class="dropdown-content textdisplay">
-
-          <a id="dash" href=" {% url 'aut:view_dashboard' %} "><button>Dashboard</button></a>
-          <a id="stat" href=" {% url 'aut:view_statistik' %} "><button>Statistik</button></a>
-
+          <a href=" {% url 'aut:view_dashboard' %} "><button id="dash">Dashboard</button></a>
+          <a href=" {% url 'aut:view_statistik' %} "><button id="stat">Statistik</button></a>
         </div>
       </div>
 
         <div class="dropdown">
         <div class="dropdown-content textdisplay">
-
-          <a id="req" href=" {% url 'aut:view_requirement' %} "><button>Requirements</button></a>
-          <a id="testc" href=" {% url 'aut:view_testcase' %} "><button>TestCases</button></a>
-          <a id="testr" href=" {% url 'aut:view_testrun' %} "><button>TestRuns</button></a>
-
+          <a href=" {% url 'aut:view_requirement' %} "><button id="req">Requirements</button></a>
+          <a href=" {% url 'aut:view_testcase' %} "><button id="testc">TestCases</button></a>
+          <a href=" {% url 'aut:view_testrun' %} "><button id="testr">TestRuns</button></a>
         </div>
       </div>
 
