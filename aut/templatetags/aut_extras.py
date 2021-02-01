@@ -77,31 +77,28 @@ def color_req(requirement):
 
 @register.filter(name='requirement_color')
 def requirement_color(requirement):
-    result = ' style=" background: linear-gradient(to right, white 0%, white 80%, #FF0000 100%);"'
     if requirement.testcase_set.all().exists():
         result = ' style=" background: linear-gradient(to right, white 0%, white 80%, #00ff00 100%);"'
-    return mark_safe(result)
+        return mark_safe(result)
 
 #müssen noch getestet werden
 @register.filter(name='testcase_color')
 def testcase_color(testcase):
-    result = ' style=" background: linear-gradient(to right, white 0%, white 80%, #FF0000 100%);"'
     if testcase.testrun_set.all().exists() and testcase.testc_fk_requirement.exists():
-        if testcase.testrun_set.all().latest('testr_datum_aenderung').testr_status == 'p':
+        if testcase.testrun_set.all().latest('testr_datum_aenderung').testr_status == 'p' and (testcase.testrun_set.all().latest('testr_datum_aenderung').testr_datum_aenderung > testcase.testc_datum_aenderung) :
             result = ' style=" background: linear-gradient(to right, white 0%, white 80%, #00ff00 100%);"'
-    return mark_safe(result)
+            return mark_safe(result)
 
 @register.filter(name='testrun_color')
 def testrun_color(testrun):
-    result = ' style=" background: linear-gradient(to right, white 0%, white 80%, #FF0000 100%);"'
+    result = ""
     if testrun.testr_fk_testcaseid and testrun.testr_status == 'p':
         result = ' style=" background: linear-gradient(to right, white 0%, white 80%, #00ff00 100%);"'
     if testrun.testr_fk_testcaseid and testrun.testr_status == 'n':
         result = ' style=" background: linear-gradient(to right, white 0%, white 80%, #0000ff 100%);"'
-
     #wenn der TestRun durchgefallen ist wird er orange markiert
     if testrun.testr_fk_testcaseid and testrun.testr_status == 'f':
-        result = ' style=" background: linear-gradient(to right, white 0%, white 80%, orange 100%);"'
+        result = ' style=" background: linear-gradient(to right, white 0%, white 80%, red 100%);"'
 
     return mark_safe(result)
 
@@ -112,27 +109,18 @@ def testrun_time(testrun, time):
     testrun.testr_dauer = time
 
 
-#Rote Markierung
 @register.filter(name='rote_markierung')
 def rote_markierung(element):
     if int(element) > 0:
         return mark_safe('style="background: orange;"')
 
+
 @register.filter(name='zip')
 def zip_lists(a, b):
-    #for forms in b:
-     #   for field in forms:
-      #      print('field: ' + str(field))
-
-   # for a, b in zip(a, b):
-    #    print('a: ' + str(a))
-     #   print('b: ' + str(b['schritt_tatsaechlichesergebnis']))
-      #  print('b: ' + str(b['schritt_ergebnis']))
-
     return zip(a, b)
 
 
 @register.filter(name='zeit')
 def zeit(dauer):
-
-    return str(datetime.timedelta(seconds=int(dauer)))
+    if dauer:
+        return str(datetime.timedelta(seconds=int(dauer)))

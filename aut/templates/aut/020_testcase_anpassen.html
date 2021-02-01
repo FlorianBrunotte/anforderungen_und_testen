@@ -40,9 +40,18 @@ table{
   width: auto;
 
 }
+li{
+  text-decoration: none;
+  list-style-type:none;
+  }
 
+ ul{
+  float: left;
+  text-align: left;
+
+ }
 textarea{
-width: 100%;
+width: 99%;
 height: 100%;
 }
 .noch {
@@ -65,6 +74,10 @@ transition: background-color 0.5s;
     background-color: #D4E88B;
     color: white;
 }
+
+#Schritte_Tabelle input{
+width: 99%;
+}
 </style>
 <body>
 
@@ -72,7 +85,7 @@ transition: background-color 0.5s;
   <h1>{{ testc_instance }}</h1>
     <table>
      <tr>
-         <td><input class="buttons" form="searchForm" id="sub1" type="submit" value="Speichern"></td>
+         <td><input onclick="myFunction()" class="buttons" form="searchForm" id="sub1" type="submit" value="Speichern"></td>
 
 
 <form action="{% url 'aut:testcase_create' pk=testc_instance.testc_pk_testcaseid  %}" method="post">
@@ -94,17 +107,18 @@ transition: background-color 0.5s;
          <td>{{ form.testc_form_name }}
          <span id="chars1" class="noch"></span></td>
      </tr>
-
+    {% if req_for_usergroup %}
      <tr>
          <td><label for="{{ form.testc_form_fk_requirement.id_for_label }}">Requirement</label></td>
          <td>{{ form.testc_form_fk_requirement }}</td>
      </tr>
+     {% endif %}
 
      <tr>
          <td> TestSchritte </td>
          <td>
 
-             <table id="Schritte Tabelle">
+             <table id="Schritte_Tabelle" style="width: 100%;">
                  <tr>
 			<td>Schritt </td> <td>erwartetes Ergebnis</td> <td>Löschen?</td>
 		</tr>
@@ -140,7 +154,7 @@ transition: background-color 0.5s;
 
          </td>
      </tr>
-
+    {% if testruns %}
      <tr>
          <td>TestRuns:</td>
          <td>
@@ -152,6 +166,7 @@ transition: background-color 0.5s;
 
          </td>
      </tr>
+     {% endif %}
 
 
      <tr>
@@ -179,6 +194,7 @@ transition: background-color 0.5s;
 
 <script>
 var maxLength = 100;
+var maxLength2 = 300;
 $('#chars1').text(' characters remaining');
 $('#chars2').text(' characters remaining');
 $('#chars3').text(' characters remaining');
@@ -190,20 +206,83 @@ $('#id_testc_form_name').keyup(function() {
 });
 $('#id_testc_form_beschreibung').keyup(function() {
   var length = $(this).val().length;
-  var length = maxLength-length;
+  var length = maxLength2-length;
   $('#chars2').text(length + ' characters remaining');
 });
 $('#id_testc_form_kommentar').keyup(function() {
   var length = $(this).val().length;
-  var length = maxLength-length;
+  var length = maxLength2-length;
   $('#chars3').text(length + ' characters remaining');
 });
 $('#id_testc_form_vorbedingung').keyup(function() {
   var length = $(this).val().length;
-  var length = maxLength-length;
+  var length = maxLength2-length;
   $('#chars4').text(length + ' characters remaining');
 });
 
 </script>
+
+
+
+<style>
+
+#snackbar {
+  visibility: hidden;
+  min-width: 250px;
+  margin-left: -125px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 2px;
+  padding: 16px;
+  position: fixed;
+  z-index: 1;
+  left: 50%;
+  bottom: 30px;
+  font-size: 17px;
+}
+
+#snackbar.show {
+  visibility: visible;
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@-webkit-keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
+</style>
+
+<div id="snackbar">Gespeichert</div>
+
+<script>
+
+
+function myFunction() {
+  var x = document.getElementById("snackbar");
+  x.className = "show";
+  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+}
+
+
+
+</script>
+
 </body>
 </html>

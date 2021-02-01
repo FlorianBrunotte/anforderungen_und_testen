@@ -7,10 +7,11 @@ from pathlib import Path
 from PIL import Image
 from django import forms
 from django.contrib.auth.models import User
-from django.db.models import Avg
+from django.db.models import Avg, Sum
 from django.shortcuts import render, redirect
 import datetime
 # Create your views here.
+from textwrap import wrap
 
 from django.http import HttpResponse, HttpResponsePermanentRedirect
 
@@ -24,7 +25,7 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import cm
 from reportlab.lib.utils import ImageReader
 
-from .models import requirement, testcase, testrun, testcase_schritt, note, testrun_schritt, user_erweitern
+from .models import requirement, testcase, testrun, testcase_schritt, note, testrun_schritt, user_erweitern, projekt
 
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -215,7 +216,7 @@ def view_dashboard(request):
 ########################################################################################################################
 
 def view_requirement(request):
-    users = User.objects.filter(user_erweitern__gruppennummer=request.user.user_erweitern.gruppennummer).filter(user_erweitern__rolle='s')
+    users = User.objects.filter(user_erweitern__gruppennummer=request.user.user_erweitern.gruppennummer)
     req_for_usergroup = requirement.objects.filter(req_fk_ersteller__in=users).order_by('-req_pk_requirementid')
 
     context = {
@@ -274,6 +275,7 @@ def edit_requirement(request, pk=None):
     context = {
         'form': form,
         'requ_instance': requ_instance,
+        'testc_for_usergroup':testc_for_usergroup
     }
 
     return render(request, 'aut/020_requirement_anpassen.html', context)
@@ -313,6 +315,13 @@ def edit_testcase(request, pk=None):
 
     if request.method == 'POST':
         if request.POST.get("delete_testcase"):
+            testruns = testrun.objects.filter(testr_fk_testcaseid=testc_instance)
+            for run in testruns:
+                run.delete()
+            testc_schritte = testcase_schritt.objects.filter(schritt_fk_testcase=testc_instance)
+            for schritt in testc_schritte:
+                schritt.delete()
+
             name = "ID:" + str(testc_instance.testc_pk_testcaseid) + " Name: " + str(testc_instance.testc_name)
             testc_instance.delete()
             return HttpResponse(name + " wurde gelöscht")
@@ -356,7 +365,8 @@ def edit_testcase(request, pk=None):
         'testc_instance': testc_instance,
         'schritte_instance': schritte_instance,
         'testruns': testruns,
-        'formset': formset
+        'formset': formset,
+        'req_for_usergroup':req_for_usergroup
     }
 
     return render(request, 'aut/020_testcase_anpassen.html', context)
@@ -383,8 +393,8 @@ def edit_testrun(request, pk=None):
     users = User.objects.filter(user_erweitern__gruppennummer=request.user.user_erweitern.gruppennummer).filter(user_erweitern__rolle='s')
     testc_for_usergroup = testcase.objects.filter(testc_fk_ersteller__in=users)
     req_for_usergroup = requirement.objects.filter(req_fk_ersteller__in=users)
-    testc_with_requirement = testc_for_usergroup.filter(testc_fk_requirement__in=req_for_usergroup).distinct()
-    print(testc_with_requirement)
+    testc_with_requirement = testc_for_usergroup.filter(testc_fk_requirement__in=req_for_usergroup).filter(testcase_schritt__isnull=False).distinct()
+
 
     if request.method == 'POST':
         form = TestRunForm(request.POST,tecs=testc_with_requirement)
@@ -437,8 +447,6 @@ def edit_testrun(request, pk=None):
 
 def testrun_run(request, pk):
     testr_instance = get_object_or_404(testrun, testr_pk_testrunid=pk)
-    if testr_instance.testr_status != 'n':
-        return HttpResponse(str(testr_instance) + " wurde bereits durchgeführt")
 
     testc_schritte = testcase_schritt.objects.filter(schritt_fk_testcase=testr_instance.testr_fk_testcaseid)
 
@@ -467,8 +475,10 @@ def testrun_run(request, pk):
             # Generator
             if all(item == list_mit_Ergebnissen[0] == 'p' for item in list_mit_Ergebnissen):
                 testr_instance.testr_status = 'p'
+                testr_instance.save()
             else:
                 testr_instance.testr_status = 'f'
+                testr_instance.save()
 
         if request.POST.get("TIME"):
             testr_instance.testr_dauer = int(request.POST.get("TIME"))
@@ -478,13 +488,12 @@ def testrun_run(request, pk):
         testr_instance.testr_testc_datum = testc.testc_datum_aenderung
         testr_instance.save()
 
-        # hier die Zuordnung der Schritte?
+        # hier die Zuordnung der Schritte
         testr_schritte = testrun_schritt.objects.filter(schritt_fk_testrun=testr_instance)
         testc_schritte = testc_schritte.order_by('schritt_pk_id')
 
         aktueller_testc = testc_schritte.first()
 
-        #next Operator für Arme von Reddit
         for schritt in testr_schritte:
             schritt.schritt_schritte = aktueller_testc.schritt_schritte
             schritt.schritt_erwartetesergebnis = aktueller_testc.schritt_erwartetesergebnis
@@ -511,8 +520,8 @@ def testrun_run(request, pk):
         return HttpResponseRedirect(reverse('aut:view_testrun'))
         #return HttpResponseRedirect(reverse('aut:testrun_change', kwargs={'pk': pk}))
 
-
     else:
+
         formset = TestRun_Schritt_FormSet(instance=testr_instance, )
 
         if testr_instance.testrun_schritt_set.exists:
@@ -529,10 +538,11 @@ def testrun_run(request, pk):
 
         formset.initial = liste_mit_dictios
 
+
     context = {
         'testr_instance': testr_instance,
         'testc_schritte': testc_schritte,
-        'formset': formset
+        'formset': formset,
 
     }
 
@@ -594,6 +604,7 @@ def view_statistik(request):
     min_testrun = testrun.objects.all().aggregate(Min('testr_dauer'))
     max_testrun = testrun.objects.all().aggregate(Max('testr_dauer'))
     durchschnitt_testrun = testrun.objects.all().aggregate(Avg('testr_dauer'))
+    summe_testrun = testrun.objects.all().aggregate(Sum('testr_dauer'))
 
     #Usergruppe:
     usergruppe = request.user.user_erweitern.gruppennummer
@@ -609,6 +620,7 @@ def view_statistik(request):
         'min_testrun': min_testrun,
         'max_testrun': max_testrun,
         'durchschnitt_testrun': durchschnitt_testrun,
+        'summe_testrun':summe_testrun,
         'usergruppe': usergruppe
     }
 
@@ -683,7 +695,8 @@ from django.http import FileResponse
 from reportlab.pdfgen import canvas
 
 def TestDocument(request):
-    # Create a file-like buffer to receive PDF data.
+
+
     buffer = io.BytesIO()
 
     # Create the PDF object, using the buffer as its "file."
@@ -696,7 +709,7 @@ def TestDocument(request):
 
     text = p.beginText(1 * cm, 29* cm)
     text.setFont("Times-Roman", 12)
-    text.textLine("Gruppe: " + str(request.user.user_erweitern.gruppennummer))
+    text.textLine(str(request.user.user_erweitern.gruppennummer))
     text.textLine("Gruppenmitglieder")
 
     for user in users:
@@ -709,13 +722,6 @@ def TestDocument(request):
 
 
 
-    # ###################################
-    # 5) Draw a image
-
-
-    #cwd = os.getcwd()  # Get the current working directory (cwd)
-    #im = Image.open(Path(cwd + '/anforderungenundtesten/aut/logo.png' ))
-    #p.drawInlineImage(im, 14 * cm, 25.5* cm)
 
     text = p.beginText(1*cm, 24*cm)
     text.setFont("Times-Roman", 12)
@@ -730,13 +736,13 @@ def TestDocument(request):
     req_for_usergroup = requirement.objects.filter(req_fk_ersteller__in=users)
     for req in req_for_usergroup:
 
-        text.textLine(str(req))
+        text.textLines("Name: " + "\n".join(wrap(str(req), 80)))
+        text.textLines("Beschreibung: " + "\n".join(wrap(str(req.req_beschreibung), 80)))
+        text.textLines("Kommentar: " + "\n".join(wrap(str(req.req_kommentar), 80)))
         text.textLine("Ersteller: " + str(req.req_fk_ersteller))
         text.textLine("Erstelldatum: " + str(req.req_datum_erstellung))
         text.textLine("Änderungsdatum: " + str(req.req_datum_aenderung))
-        text.textLine("Beschreibung: " + str(req.req_beschreibung))
-        text.textLine("Kommentar: " + str(req.req_kommentar))
-        text.textLine("Kategorie: " + str(req.req_kategorie))
+
         text.textLine("")
         i = i + 1
         if i > 3:
@@ -759,12 +765,21 @@ def TestDocument(request):
     testc_for_usergroup = testcase.objects.filter(testc_fk_ersteller__in=users)
     for testc in testc_for_usergroup:
 
-        text.textLine(str(testc))
-        text.textLine("Ersteller: " + str(testc.testc_fk_ersteller))
-        text.textLine("Erstelldatum: " + str(testc.testc_datum_erstellung))
-        text.textLine("Änderungsdatum: " + str(testc.testc_datum_aenderung))
-        text.textLine("Beschreibung: " + str(testc.testc_beschreibung))
-        text.textLine("Kommentar: " + str(testc.testc_kommentar))
+        text.textLines("Name: " + "\n".join(wrap(str(testc), 80)))
+        text.textLines("Beschreibung: " + "\n".join(wrap(str(testc.testc_beschreibung), 80)))
+        text.textLines("Vorbedingung: " + "\n".join(wrap(str(testc.testc_vorbedingung), 80)))
+        text.textLines("Kommentar: " + "\n".join(wrap(str(testc.testc_kommentar), 80)))
+        reqsliste = []
+
+        for a in testc.testc_fk_requirement.all():
+            reqsliste.append(str(a))
+
+        text.textLines("Requirements: " + "\n".join(wrap(str(reqsliste), 80)))
+
+        text.textLine("Ersteller: " + str(req.req_fk_ersteller))
+        text.textLine("Erstelldatum: " + str(req.req_datum_erstellung))
+        text.textLine("Änderungsdatum: " + str(req.req_datum_aenderung))
+
         text.textLine("")
         i = i + 1
         if i > 3:
@@ -787,13 +802,22 @@ def TestDocument(request):
     i = 0  # nur 4 Elemente auf 1 Seite
     testr_for_usergroup = testrun.objects.filter(testr_fk_ersteller__in=users)
     for testr in testr_for_usergroup:
+        text.textLines("Name: " + "\n".join(wrap(str(testr), 80)))
+        text.textLines("Beschreibung: " + "\n".join(wrap(str(testr.testr_beschreibung), 80)))
+        text.textLines("Kommentar: " + "\n".join(wrap(str(testr.testr_kommentar), 80)))
 
-        text.textLine(str(testc))
+        text.textLines("Testcase: " + "\n".join(wrap(str(testr.testr_fk_testcaseid), 80)))
+
+        text.textLine("Status: " + str(testr.testr_status))
+
+        if testr.testr_dauer:
+            text.textLine("Dauer: " + str(datetime.timedelta(seconds=int(testr.testr_dauer))))
+
+
         text.textLine("Ersteller: " + str(testr.testr_fk_ersteller))
         text.textLine("Erstelldatum: " + str(testr.testr_datum_erstellung))
         text.textLine("Änderungsdatum: " + str(testr.testr_datum_aenderung))
-        text.textLine("Beschreibung: " + str(testr.testr_beschreibung))
-        text.textLine("Kommentar: " + str(testr.testr_kommentar))
+
         text.textLine("")
         i = i + 1
         if i > 3:
@@ -811,7 +835,7 @@ def TestDocument(request):
     # FileResponse sets the Content-Disposition header so that browsers
     # present the option to save the file.
     buffer.seek(0)
-    return FileResponse(buffer, as_attachment=True, filename='hello.pdf')
+    return FileResponse(buffer, as_attachment=True, filename='anfundtest.pdf')
     return response
 
 
@@ -828,7 +852,7 @@ def signup(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             user_instance_erweitern, created = user_erweitern.objects.get_or_create(user=user)
-            user_instance_erweitern.gruppennummer = form.data.get('gruppennummer')
+            user_instance_erweitern.gruppennummer = projekt.objects.get(gruppennummer=form.data.get('gruppennummer'))
             user_instance_erweitern.rolle = 's'
             user_instance_erweitern.save()
             login(request, user)
@@ -837,7 +861,9 @@ def signup(request):
 
     else:
         form = SignUpForm()
-    return render(request, 'aut/signup.html', {'form': form})
+
+    projekte = projekt.objects.all()
+    return render(request, 'aut/signup.html', {'form': form, 'projekte': projekte})
 
 
 

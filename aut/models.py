@@ -2,9 +2,7 @@ from django.db import models
 
 # Create your models here.
 
-from django.db.models import F
 from django.urls import reverse
-from django.contrib.auth.models import User
 
 #import der Choices damit die überall verwendbar sind
 from .choices import *
@@ -14,10 +12,15 @@ from django.contrib.auth.models import User
 ########################################################################################################################
 
 #neue Klasse die den User erweitern soll
+class projekt(models.Model):
+    gruppennummer = models.IntegerField(null=True, blank=True, unique=True)
+    #Funktionen:
+    def __str__(self):
+        return "Gruppe: " + str(self.gruppennummer)
 
 class user_erweitern(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
-    gruppennummer = models.CharField(max_length=1, choices=GRUPPEN, null=True, blank=True)
+    gruppennummer = models.ForeignKey('projekt', on_delete=models.SET_NULL, null=True, blank=True)
     rolle = models.CharField(max_length=1, choices=ROLLEN, null=True, blank=True)
 
 #Ende der organisatorischen Klassen
@@ -56,12 +59,12 @@ class testcase(models.Model):
     testc_fk_requirement = models.ManyToManyField(requirement, blank=True)
 
     #Atrribute:
-    testc_name = models.CharField(max_length=128, null=True, blank=True)
-    testc_kommentar = models.CharField(max_length=128, null=True, blank=True)
+    testc_name = models.CharField(max_length=100, null=True, blank=True)
+    testc_kommentar = models.CharField(max_length=300, null=True, blank=True)
     testc_datum_erstellung = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     testc_datum_aenderung = models.DateTimeField(auto_now=True, null=True, blank=True)
-    testc_beschreibung = models.CharField(max_length=128, null=True, blank=True)
-    testc_vorbedingung = models.CharField(max_length=128, null=True, blank=True)
+    testc_beschreibung = models.CharField(max_length=300, null=True, blank=True)
+    testc_vorbedingung = models.CharField(max_length=300, null=True, blank=True)
 
     #Funktionen:
     def __str__(self):
@@ -83,8 +86,8 @@ class testcase_schritt(models.Model):
     schritt_fk_testcase = models.ForeignKey('testcase', on_delete=models.SET_NULL, null=True, blank=True)
 
     #Atrribute:
-    schritt_schritte = models.CharField(max_length=128, null=True, blank=True)
-    schritt_erwartetesergebnis = models.CharField(max_length=128, null=True, blank=True)
+    schritt_schritte = models.CharField(max_length=100, null=True, blank=True)
+    schritt_erwartetesergebnis = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
         return "ID: " + str(self.schritt_pk_id) + "Schritt: " + str(self.schritt_schritte)
@@ -96,12 +99,12 @@ class testrun_schritt(models.Model):
     schritt_fk_testcase_schritt = models.ForeignKey('testcase_schritt', on_delete=models.SET_NULL, null=True, blank=True)
 
     #Atrribute:
-    schritt_tatsaechlichesergebnis = models.CharField(max_length=128, null=True, blank=True)
+    schritt_tatsaechlichesergebnis = models.CharField(max_length=100, null=True, blank=True)
     schritt_ergebnis = models.CharField(max_length=1, choices=RUN_STATUS, default=RUN_STATUS[1], null=True, blank=False)
 
     #zum Kopieren der TestCase Schritte
-    schritt_schritte = models.CharField(max_length=128, null=True, blank=True)
-    schritt_erwartetesergebnis = models.CharField(max_length=128, null=True, blank=True)
+    schritt_schritte = models.CharField(max_length=100, null=True, blank=True)
+    schritt_erwartetesergebnis = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
         return "ID: " + str(self.schritt_pk_id)
@@ -117,7 +120,7 @@ class testrun(models.Model):
     testr_kommentar = models.CharField(max_length=300, null=True, blank=True)
     testr_datum_erstellung = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     testr_datum_aenderung = models.DateTimeField(auto_now=True, null=True, blank=True)
-    testr_beschreibung = models.CharField(max_length=128, null=True, blank=True)
+    testr_beschreibung = models.CharField(max_length=300, null=True, blank=True)
     testr_testc_datum = models.DateTimeField(null=True, blank=True)
 
     testr_status = models.CharField(max_length=1, choices=RUN_STATUS, help_text='TestRun Ergebnis', null=True, blank=True)
@@ -148,4 +151,4 @@ class note(models.Model):
     #Private Keys, Foreign Keys and other relationships:
     note_fk_ersteller = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
-    notes = models.CharField(max_length=128, null=True, blank=True)
+    notes = models.CharField(max_length=300, null=True, blank=True)

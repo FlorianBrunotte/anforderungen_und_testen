@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import requirement, testcase, testrun, testcase_schritt, testrun_schritt, user_erweitern, note
+from .models import requirement, testcase, testrun, testcase_schritt, testrun_schritt, user_erweitern, note, projekt
 
 admin.site.register(requirement)
 admin.site.register(testrun)
@@ -10,6 +10,7 @@ admin.site.register(testcase_schritt)
 admin.site.register(testrun_schritt)
 admin.site.register(user_erweitern)
 admin.site.register(note)
+admin.site.register(projekt)
 
 #Test für die Gruppennummer
 from .models import user_erweitern

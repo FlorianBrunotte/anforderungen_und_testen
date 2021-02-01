@@ -53,9 +53,8 @@ value="Projekt">Projekt</label>
 
 <div class="TestCase select" style="display: block;">
         <div>
-        <p>Formel von TestCase Coverage: Requirements mit TestCase / Requirements
-        Ergebnis: {{ TestCase_Coverage }} %</p>
-            <p>&nbsp;</p>
+        <p>Testcase Coverage = Requirements mit Testcase / Requirements = {{ TestCase_Coverage }} %</p>
+            <p>&nbsp</p>
 
     </div>
    <table class="select_table" border="solid">
@@ -84,9 +83,8 @@ value="Projekt">Projekt</label>
 
 <div class="TestRun select">
         <div>
-        <p>Formel von TestRun Coverage: Requirements mit erfolgreichem TestRun / Requirements
-        Ergebnis: {{ TestRun_Coverage }} %</p>
-        <p>Durschnitt: {{ durchschnitt_testrun.testr_dauer__avg|zeit }} Min: {{ min_testrun.testr_dauer__min|zeit }} Max: {{ max_testrun.testr_dauer__max|zeit }}</p>
+        <p>Testrun Coverage = Requirements mit erfolgreichem Testrun / Requirements = {{ TestRun_Coverage }} %</p>
+        <p>Minimale Zeit: {{ min_testrun.testr_dauer__min|zeit }} Maximale Zeit: {{ max_testrun.testr_dauer__max|zeit }} Durschnittliche Zeit: {{ durchschnitt_testrun.testr_dauer__avg|zeit }}  Aufsummierte Zeit: {{ summe_testrun.testr_dauer__sum|zeit }} </p>
 
     </div>
    <table class="select_table" border="solid">
@@ -116,7 +114,9 @@ value="Projekt">Projekt</label>
 
 <div class="Projekt select">
    <table class="select_table" border="solid">
-       <tr>Gruppe {{ usergruppe }}</tr>
+       <p>Gruppe {{ usergruppe }}</p>
+       <p>&nbsp</p>
+
         <tr>
             <th> Name </th>
             <th> Anzahl Requirements </th>

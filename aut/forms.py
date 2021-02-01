@@ -1,5 +1,5 @@
 from django import forms
-from .models import requirement, testcase
+from .models import requirement, testcase, projekt
 #import der Choices damit die überall verwendbar sind
 from .choices import *
 
@@ -20,10 +20,10 @@ class RequirementForm(forms.Form):
 
 class TestCaseForm(forms.Form):
     #Felder die verändert werden können
-    testc_form_name = forms.CharField(widget=forms.Textarea(attrs={"rows": 1, "cols": 100}))
-    testc_form_beschreibung = forms.CharField(widget=forms.Textarea(attrs={"rows": 5, "cols": 80}))
-    testc_form_kommentar = forms.CharField(widget=forms.Textarea(attrs={"rows": 5, "cols": 80}))
-    testc_form_vorbedingung = forms.CharField(widget=forms.Textarea(attrs={"rows": 5, "cols": 80}))
+    testc_form_name = forms.CharField(widget=forms.Textarea(attrs={"rows": 1, "cols": 100}), max_length=100, required=False)
+    testc_form_beschreibung = forms.CharField(widget=forms.Textarea(attrs={"rows": 5, "cols": 80}), max_length=300, required=False)
+    testc_form_kommentar = forms.CharField(widget=forms.Textarea(attrs={"rows": 5, "cols": 80}), max_length=300, required=False)
+    testc_form_vorbedingung = forms.CharField(widget=forms.Textarea(attrs={"rows": 5, "cols": 80}), max_length=300, required=False)
 
     testc_form_fk_requirement = forms.ModelMultipleChoiceField(queryset=None ,widget=forms.CheckboxSelectMultiple, required=False)
 
@@ -45,9 +45,9 @@ class TestCase_Schritt_Form2(forms.Form):
 
 class TestRunForm(forms.Form):
     # Felder die verändert werden können
-    testr_form_name = forms.CharField(widget=forms.Textarea(attrs={"rows": 2, "cols": 80}))
-    testr_form_beschreibung = forms.CharField(widget=forms.Textarea(attrs={"rows": 2, "cols": 80}))
-    testr_form_kommentar = forms.CharField(widget=forms.Textarea(attrs={"rows": 2, "cols": 80}))
+    testr_form_name = forms.CharField(widget=forms.Textarea(attrs={"rows": 2, "cols": 80}), max_length=100, required=False)
+    testr_form_beschreibung = forms.CharField(widget=forms.Textarea(attrs={"rows": 2, "cols": 80}), max_length=300, required=False)
+    testr_form_kommentar = forms.CharField(widget=forms.Textarea(attrs={"rows": 2, "cols": 80}), max_length=300, required=False)
 
     testr_form_fk_testcase = forms.ModelChoiceField(queryset=None ,widget=forms.RadioSelect, required=False)
 
@@ -59,14 +59,14 @@ class TestRunForm(forms.Form):
 
 class GroupForm(forms.Form):
     # Felder die verändert werden können
-    group_form_group = forms.ChoiceField(choices=GRUPPEN)
+    group_form_group = forms.ChoiceField(choices=projekt.objects.all(), widget=forms.Select(attrs={'onchange': 'submit();'}))
 
 
 class TestCase_Schritte_Form(forms.Form):
     #Felder die verändert werden können
-    schritt_form_schritt = forms.CharField(widget=forms.Textarea(attrs={"rows": 5, "cols": 60}))
-    schritt_form_erwartetesergebnis = forms.CharField(widget=forms.Textarea(attrs={"rows": 5, "cols": 60}))
-    schritt_form_tatsaechlichesergebnis = forms.CharField(widget=forms.Textarea(attrs={"rows": 5, "cols": 40}))
+    schritt_form_schritt = forms.CharField(widget=forms.Textarea(attrs={"rows": 5, "cols": 60}), max_length=300, required=False)
+    schritt_form_erwartetesergebnis = forms.CharField(widget=forms.Textarea(attrs={"rows": 5, "cols": 60}), max_length=300, required=False)
+    schritt_form_tatsaechlichesergebnis = forms.CharField(widget=forms.Textarea(attrs={"rows": 5, "cols": 40}), max_length=300, required=False)
     schritt_ergebnis = forms.CharField(label='ergebnis', widget=forms.RadioSelect(choices=RUN_STATUS))
 
 

@@ -32,6 +32,14 @@ width: 100%;
 #ab_button{
 width:100%;
 }
+li{
+list-style-type: none;
+}
+.ergebnis input{
+width: 99%;
+}
+
+
 </style>
 <body>
     <h1>{{ testr_instance }}</h1>
@@ -52,7 +60,7 @@ width:100%;
         <td>Schritt</td>
         <td>erwartetes Ergebnis</td>
         <td>tatsächliches Ergebnis</td>
-        <td>Ergebnis</td>
+        <td>Status</td>
 
     </tr>
     {%for a, b in testc_schritte|zip:formset %}
@@ -61,7 +69,7 @@ width:100%;
     <tr>
         <td> {{a.schritt_schritte}}</td>
         <td> {{a.schritt_erwartetesergebnis}}</td>
-        <td>{{ b.schritt_tatsaechlichesergebnis }}</td>
+        <td class="ergebnis">{{ b.schritt_tatsaechlichesergebnis }}</td>
         <td>{{ b.schritt_ergebnis }}</td>
     </tr>
 
@@ -87,7 +95,7 @@ setInterval(setTime, 1000);
 function setTime() {
   ++totalSeconds;
   secondsLabel.innerHTML = pad(totalSeconds % 60);
-  minutesLabel.innerHTML = pad(parseInt(totalSeconds / 60));
+  minutesLabel.innerHTML = pad(parseInt(parseInt(totalSeconds / 60) % 60));
   hoursLabel.innerHTML = pad(parseInt(totalSeconds /  3600));
 }
 
@@ -116,9 +124,7 @@ window.onload = function() {
             return undefined;
         }
 
-        var confirmationMessage = 'It looks like you have been editing something. '
-                                + 'If you leave before saving, your changes will be lost.';
-
+        var confirmationMessage = 'Do you want to leave the page?';
         (e || window.event).returnValue = confirmationMessage; //Gecko + IE
         return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
     });

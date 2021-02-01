@@ -24,7 +24,16 @@ table{
   margin-left: auto;
   margin-right: auto;
 }
+li{
+  text-decoration: none;
+  list-style-type:none;
+  }
 
+ ul{
+  float: left;
+  text-align: left;
+
+ }
 .column2 {
   float: left;
   width: 100%;
@@ -42,7 +51,7 @@ table{
 
 }
 textarea{
-width: 100%;
+width: 99%;
 height: 100%;
 }
 .noch {
@@ -70,11 +79,13 @@ transition: background-color 0.5s;
 <div class="column2">
   <h1>{{ testr_instance }}</h1>
 
+
+
          {% if testr_instance.testr_status == 'n' %}
     <table>
      <tr>
 
-         <td><input  class="buttons" form="searchForm" id="sub1" type="submit" value="Speichern"></td>
+         <td><input onclick="myFunction()"  class="buttons" form="searchForm" id="sub1" type="submit" value="Speichern"></td>
 
          {% if testr_instance.testr_fk_testcaseid %}
 
@@ -106,6 +117,11 @@ transition: background-color 0.5s;
          <td>{{ form.testr_form_name }}
          <span id="chars1" class="noch"></span></td>
      </tr>
+           <tr>
+         <td><label for="{{ form.testr_form_fk_testcase.id_for_label }}">TestCase</label></td>
+         <td>{{ form.testr_form_fk_testcase }}</td>
+     </tr>
+
      <tr>
          <td><label for="{{ form.testr_form_beschreibung.id_for_label }}">Beschreibung</label></td>
          <td>{{ form.testr_form_beschreibung }}
@@ -115,10 +131,6 @@ transition: background-color 0.5s;
          <td><label for="{{ form.testr_form_kommentar.id_for_label }}">Kommentar</label></td>
          <td>{{ form.testr_form_kommentar }}
          <span id="chars3" class="noch"></span></td>
-     </tr>
-     <tr>
-         <td><label for="{{ form.testr_form_fk_testcase.id_for_label }}">TestCase</label></td>
-         <td>{{ form.testr_form_fk_testcase }}</td>
      </tr>
 
      {% else %}
@@ -154,7 +166,7 @@ transition: background-color 0.5s;
              <th>Schritte</th>
              <th>erwartetes Ergebnis</th>
              <th>Tatsächliches Ergebnis</th>
-             <th>Ergebnis</th>
+             <th>Status</th>
 
          {% for schritt in testr_schritte %}
              <tr>
@@ -209,6 +221,66 @@ $('#id_testr_form_kommentar').keyup(function() {
 
 </script>
 
+
+<style>
+
+#snackbar {
+  visibility: hidden;
+  min-width: 250px;
+  margin-left: -125px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 2px;
+  padding: 16px;
+  position: fixed;
+  z-index: 1;
+  left: 50%;
+  bottom: 30px;
+  font-size: 17px;
+}
+
+#snackbar.show {
+  visibility: visible;
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@-webkit-keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
+</style>
+
+<div id="snackbar">Gespeichert</div>
+
+<script>
+
+
+function myFunction() {
+  var x = document.getElementById("snackbar");
+  x.className = "show";
+  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+}
+
+
+
+</script>
 
 </body>
 </html>

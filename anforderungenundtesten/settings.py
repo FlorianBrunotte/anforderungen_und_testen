@@ -88,7 +88,7 @@ WSGI_APPLICATION = 'anforderungenundtesten.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ANFUNDTEST', #ANFUNDTEST
+        'NAME': 'ANFUNDTESTEN', #ANFUNDTEST
         'USER': 'postgres', #postgres
         'PASSWORD': 'koeln18101998', #also das Masterpassword oder doch das Passwort vom User Für PC Koeln18101998! für Surcafe koeln18101998
         'HOST': 'localhost', #oder localhost unter Windows immer definieren
@@ -118,7 +118,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'de'
 
 TIME_ZONE = 'Europe/Berlin'
 

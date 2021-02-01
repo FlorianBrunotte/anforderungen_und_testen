@@ -51,7 +51,7 @@ li{
 
 }
 textarea{
-width: 100%;
+width: 99%;
 height: 100%;
 }
 .noch {
@@ -80,7 +80,7 @@ transition: background-color 0.5s;
   <h1>{{ requ_instance }}</h1>
     <table>
      <tr>
-         <td><input class="buttons" form="searchForm" id="sub1" type="submit" value="Speichern"></td>
+         <td><input onclick="myFunction()" class="buttons" form="searchForm" id="sub1" type="submit" value="Speichern"></td>
 
 
 <form action="{% url 'aut:requirement_create' pk=requ_instance.req_pk_requirementid  %}" method="post">
@@ -90,7 +90,9 @@ transition: background-color 0.5s;
      </tr>
 
  </table>
-    <p>Erstellung: {{ requ_instance.req_datum_erstellung }} Änderung: {{ requ_instance.req_datum_aenderung }} Ersteller: {{ requ_instance.req_fk_ersteller }}</p>
+    <p>Erstellung: {{ requ_instance.req_datum_erstellung }}
+        Änderung: {{ requ_instance.req_datum_aenderung }}
+        Ersteller: {{ requ_instance.req_fk_ersteller }}</p>
 
  <form action="{% url 'aut:requirement_create' pk=requ_instance.req_pk_requirementid  %}" id="searchForm" method="post">
  <table style="width:100%;">
@@ -101,11 +103,13 @@ transition: background-color 0.5s;
          <span id="chars1" class="noch"></span></td>
 
      </tr>
+     {% if testc_for_usergroup %}
      <tr>
          <td><label for="{{ form.req_form_fk_testcase.id_for_label }}">TestCases</label></td>
          <td>{{ form.req_form_fk_testcase }}</td>
 
      </tr>
+     {% endif %}
      <tr>
          <td><label for="{{ form.req_form_beschreibung.id_for_label }}">Beschreibung</label></td>
          <td>{{ form.req_form_beschreibung }}
@@ -150,5 +154,65 @@ $('#id_req_form_kommentar').keyup(function() {
 
 </script>
 
+
+<style>
+
+#snackbar {
+  visibility: hidden;
+  min-width: 250px;
+  margin-left: -125px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 2px;
+  padding: 16px;
+  position: fixed;
+  z-index: 1;
+  left: 50%;
+  bottom: 30px;
+  font-size: 17px;
+}
+
+#snackbar.show {
+  visibility: visible;
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@-webkit-keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
+</style>
+
+<div id="snackbar">Gespeichert</div>
+
+<script>
+
+
+function myFunction() {
+  var x = document.getElementById("snackbar");
+  x.className = "show";
+  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+}
+
+
+
+</script>
 </body>
 </html>
