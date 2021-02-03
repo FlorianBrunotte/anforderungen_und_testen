@@ -59,7 +59,7 @@ class TestRunForm(forms.Form):
 
 class GroupForm(forms.Form):
     # Felder die verändert werden können
-    group_form_group = forms.ChoiceField(choices=projekt.objects.all(), widget=forms.Select(attrs={'onchange': 'submit();'}))
+    group_form_group = forms.ModelChoiceField(queryset=projekt.objects.all(), widget=forms.Select(attrs={'onchange': 'submit();'}))
 
 
 class TestCase_Schritte_Form(forms.Form):
