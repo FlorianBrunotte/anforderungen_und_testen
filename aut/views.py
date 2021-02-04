@@ -603,10 +603,10 @@ def view_statistik(request):
     users = User.objects.filter(user_erweitern__gruppennummer=request.user.user_erweitern.gruppennummer).filter(user_erweitern__rolle='s')
 
     #Zeiten der Testruns:
-    min_testrun = testrun.objects.all().aggregate(Min('testr_dauer'))
-    max_testrun = testrun.objects.all().aggregate(Max('testr_dauer'))
-    durchschnitt_testrun = testrun.objects.all().aggregate(Avg('testr_dauer'))
-    summe_testrun = testrun.objects.all().aggregate(Sum('testr_dauer'))
+    min_testrun = testr_for_usergroup.aggregate(Min('testr_dauer'))
+    max_testrun = testr_for_usergroup.aggregate(Max('testr_dauer'))
+    durchschnitt_testrun = testr_for_usergroup.aggregate(Avg('testr_dauer'))
+    summe_testrun = testr_for_usergroup.aggregate(Sum('testr_dauer'))
 
     #Usergruppe:
     usergruppe = request.user.user_erweitern.gruppennummer
