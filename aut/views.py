@@ -579,6 +579,8 @@ def view_statistik(request):
                 if testc.testrun_set.all().exists():
                     if testc.testrun_set.all().latest('testr_datum_aenderung').testr_status == 'f' or testc.testrun_set.all().latest('testr_datum_aenderung').testr_status == 'n':
                         all_passed = False
+                else:
+                    all_passed = False
         else:
             all_passed = False
 
